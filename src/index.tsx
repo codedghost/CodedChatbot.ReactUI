@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {Container, Row, Col} from 'react-bootstrap';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Container fluid>
+      <Row>
+        <Col>
+          <App />
+        </Col>
+      </Row>
+    </Container>
   </React.StrictMode>,
   document.getElementById('root')
 );
