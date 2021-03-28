@@ -1,0 +1,17 @@
+.login-bar {
+    color: white;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.main-navbar {
+    color: #BBBBBB;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.dropdown-toggle::after{
+    display: none; 
+ }

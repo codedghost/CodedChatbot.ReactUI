@@ -7,7 +7,7 @@ import {Container, Row, Col} from 'react-bootstrap';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Container fluid>
+    <Container>
       <Row>
         <Col>
           <App />

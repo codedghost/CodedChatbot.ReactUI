@@ -1,22 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.scss';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
 
 import NavBar from './components/Navbar/NavBar';
 
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
+import StreamInfo from './pages/StreamInfo/StreamInfo'
 
 function App(){
   
   return (
     <div className="appContent">
-      <NavBar />
-      <Router>
+      <BrowserRouter>
+        <NavBar />
         <Route exact path="/">
           <Home />
         </Route>
-      </Router>
+        <Route exact path="/stream/info">
+          <StreamInfo />
+        </Route>
+      </BrowserRouter>
     </div>
   );
 }
