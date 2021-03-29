@@ -3,7 +3,7 @@ import Config from "../../services/Config/Config";
 import {CheckApiAvailability, GetUsername} from '../../services/UIApiService/UIApiService';
 
 import {useEffect, useState} from 'react';
-import {Redirect, useLocation} from 'react-router-dom';
+import {useLocation, useHistory} from 'react-router-dom';
 
 import './NavBar.scss';
 
@@ -16,16 +16,12 @@ import YoutubeLogo from '../../vectors/youtube.svg';
 function NavBar() {
     const [showStreamDropdown, setStreamDropdown] = useState<boolean>(false);
     const [showSoftwareDropdown, setSoftwareDropdown] = useState<boolean>(false);
-    const [redirectToStreamInfo, setRedirectToStreamInfo] = useState<boolean>(false);
-    const [redirectToSoftwareInfo, setRedirectToSoftwareInfo] = useState<boolean>(false);
     const [loginUrl, setLoginUrl] = useState<string>("#");
-
-    const streamInfoRedirect = redirectToStreamInfo ? (<Redirect to="/stream/info" />) : (<div></div>);
-    const softwareInfoRedirect = redirectToSoftwareInfo ? (<Redirect to="/software/development" />) : (<div></div>);
 
     const [username, setUsername] = useState<string>("");
 
     const location = useLocation();
+    const history = useHistory();
 
     useEffect(() => {
         GetUsername()
@@ -45,10 +41,12 @@ function NavBar() {
         })
     }, [username, location.pathname]);
 
+    function GoToPage(url: string) {
+        history.push(url);
+    }
+
     return (
         <div>
-            {streamInfoRedirect}
-            {softwareInfoRedirect}
             <Navbar variant="dark" className="login-bar">
                 <Navbar.Collapse id="login-and-socials" className="justify-content-end">
                         <Nav>
@@ -104,7 +102,7 @@ function NavBar() {
                                 show={showStreamDropdown}
                                 onMouseEnter={() => setStreamDropdown(true)}
                                 onMouseLeave={() => setStreamDropdown(false)}
-                                onClick={() => setRedirectToStreamInfo(true)}>
+                                onClick={() => GoToPage("/stream/info")}>
                                     <NavDropdown.Item href="/stream/info" className="navbar-header">Info</NavDropdown.Item>
                                     <NavDropdown.Item href="/stream/playlist">Playlist</NavDropdown.Item>
                                     <NavDropdown.Item href="/stream/library">Library</NavDropdown.Item>
@@ -117,7 +115,7 @@ function NavBar() {
                                 show={showSoftwareDropdown}
                                 onMouseEnter={() => setSoftwareDropdown(true)}
                                 onMouseLeave={() => setSoftwareDropdown(false)}
-                                onClick={() => setRedirectToSoftwareInfo(true)}>
+                                onClick={() => GoToPage("/software/development")}>
                                     <NavDropdown.Item href="/software/development">Development</NavDropdown.Item>
                                     <NavDropdown.Item href="/software/current-month">Current Month</NavDropdown.Item>
                                     <NavDropdown.Item href="/software/raise-a-bug">Raise a Bug</NavDropdown.Item>
