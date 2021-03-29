@@ -1,6 +1,6 @@
 import { Image, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import Config from "../../services/Config/Config";
-import {GetUsername} from '../../services/UIApiService/UIApiService';
+import {CheckApiAvailability, GetUsername} from '../../services/UIApiService/UIApiService';
 
 import {useEffect, useState} from 'react';
 import {Redirect, useLocation} from 'react-router-dom';
@@ -18,6 +18,7 @@ function NavBar() {
     const [showSoftwareDropdown, setSoftwareDropdown] = useState<boolean>(false);
     const [redirectToStreamInfo, setRedirectToStreamInfo] = useState<boolean>(false);
     const [redirectToSoftwareInfo, setRedirectToSoftwareInfo] = useState<boolean>(false);
+    const [loginUrl, setLoginUrl] = useState<string>("#");
 
     const streamInfoRedirect = redirectToStreamInfo ? (<Redirect to="/stream/info" />) : (<div></div>);
     const softwareInfoRedirect = redirectToSoftwareInfo ? (<Redirect to="/software/development" />) : (<div></div>);
@@ -31,7 +32,18 @@ function NavBar() {
             .then((username) => {
                 setUsername(username);
             });
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        CheckApiAvailability().then((isAvailable) => {
+            console.log(isAvailable);
+            console.log(username);
+            if (isAvailable) 
+                setLoginUrl(`${Config.Api.UI}${username === "" ? `Login?redirectUrl=${location.pathname}` : `Login/Logout?redirectUrl=${location.pathname}`}`);
+            else
+                setLoginUrl("#");
+        })
+    }, [username, location.pathname]);
 
     return (
         <div>
@@ -40,7 +52,7 @@ function NavBar() {
             <Navbar variant="dark" className="login-bar">
                 <Navbar.Collapse id="login-and-socials" className="justify-content-end">
                         <Nav>
-                            <Nav.Link href={`${Config.Api.UI}${username === "" ? `Login?redirectUrl=${location.pathname}` : `Login/Logout?redirectUrl=${location.pathname}`}`}
+                            <Nav.Link href={loginUrl}
                                 style={{marginRight: username === "" ? "20.8rem" : "8rem", color: "white", fontSize: "24px"}}>
                                         {username === "" ? "Login" : `Logout ${username}`}
                                     </Nav.Link>

@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import TwitchEmbedProps from './TwitchEmbedProps';
 
 function TwitchEmbed(props: TwitchEmbedProps) {
-    let embed;
     const embedUrl = "https://embed.twitch.tv/embed/v1.js";
     
     useEffect(() => {
@@ -12,17 +11,17 @@ function TwitchEmbed(props: TwitchEmbedProps) {
         const script = document.createElement('script');
         script.setAttribute('src', embedUrl);
 
-        // script.addEventListener('load', () => {
-        //     embed = new window.Twitch.Embed(props.targetId, {
-        //         ...props,
-        //         muted: true,
-        //         allowfullscreen: true,
-        //         theme: "dark"
-        //     });
-        // });
+        script.addEventListener('load', () => {
+            new (window as any).Twitch.Embed(props.targetId, {
+                ...props,
+                muted: true,
+                allowfullscreen: true,
+                theme: "dark"
+            });
+        });
 
         document.body.appendChild(script);
-    }, [])
+    }, [props])
 
     return (
         <div id={props.targetId}>
