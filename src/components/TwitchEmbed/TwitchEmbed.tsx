@@ -13,7 +13,9 @@ function TwitchEmbed(props: TwitchEmbedProps) {
 
         script.addEventListener('load', () => {
             new (window as any).Twitch.Embed(props.targetId, {
-                ...props,
+                height: props.height,
+                width: props.width,
+                channel: props.channel,
                 muted: true,
                 allowfullscreen: true,
                 theme: "dark"
@@ -21,7 +23,8 @@ function TwitchEmbed(props: TwitchEmbedProps) {
         });
 
         document.body.appendChild(script);
-    }, [props])
+        // eslin-disable-next-line
+    }, [props.targetId, props.height, props.width, props.channel])
 
     return (
         <div id={props.targetId}>

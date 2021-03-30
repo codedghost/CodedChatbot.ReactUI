@@ -5,6 +5,8 @@ import {CheckApiAvailability, GetUsername} from '../../services/UIApiService/UIA
 import {useEffect, useState} from 'react';
 import {useLocation, useHistory} from 'react-router-dom';
 
+import NavBarProps from './NavBarProps';
+
 import './NavBar.scss';
 
 import FacebookLogo from '../../vectors/facebook.svg';
@@ -13,12 +15,9 @@ import TwitchLogo from '../../vectors/twitch.svg';
 import TwitterLogo from '../../vectors/twitter.svg';
 import YoutubeLogo from '../../vectors/youtube.svg';
 
-function NavBar() {
+function NavBar(props: NavBarProps) {
     const [showStreamDropdown, setStreamDropdown] = useState<boolean>(false);
     const [showSoftwareDropdown, setSoftwareDropdown] = useState<boolean>(false);
-    const [loginUrl, setLoginUrl] = useState<string>("#");
-
-    const [username, setUsername] = useState<string>("");
 
     const location = useLocation();
     const history = useHistory();
@@ -26,20 +25,22 @@ function NavBar() {
     useEffect(() => {
         GetUsername()
             .then((username) => {
-                setUsername(username);
+                props.SetUsernameCallback(username);
             });
-    }, []);
+    }, [props]);
 
     useEffect(() => {
         CheckApiAvailability().then((isAvailable) => {
             console.log(isAvailable);
-            console.log(username);
-            if (isAvailable) 
-                setLoginUrl(`${Config.Api.UI}${username === "" ? `Login?redirectUrl=${location.pathname}` : `Login/Logout?redirectUrl=${location.pathname}`}`);
+            console.log(props.CurrentUsername);
+            if (isAvailable)
+                props.SetLoginUrlCallback(`${Config.Api.UI}${props.CurrentUsername === "" 
+                    ? `Login?redirectUrl=${location.pathname}` 
+                    : `Login/Logout?redirectUrl=${location.pathname}`}`);
             else
-                setLoginUrl("#");
+                props.SetLoginUrlCallback("#");
         })
-    }, [username, location.pathname]);
+    }, [props, location.pathname]);
 
     function GoToPage(url: string) {
         history.push(url);
@@ -50,9 +51,9 @@ function NavBar() {
             <Navbar variant="dark" className="login-bar">
                 <Navbar.Collapse id="login-and-socials" className="justify-content-end">
                         <Nav>
-                            <Nav.Link href={loginUrl}
-                                style={{marginRight: username === "" ? "20.8rem" : "8rem", color: "white", fontSize: "24px"}}>
-                                        {username === "" ? "Login" : `Logout ${username}`}
+                            <Nav.Link href={props.LoginUrl}
+                                style={{marginRight: props.CurrentUsername === "" ? "20.8rem" : "8rem", color: "white", fontSize: "24px"}}>
+                                        {props.CurrentUsername === "" ? "Login" : `Logout ${props.CurrentUsername}`}
                                     </Nav.Link>
                             <Nav.Link href="/twitch">
                                 <Image 
@@ -130,5 +131,12 @@ function NavBar() {
         </div>
     );
 }
+
+NavBar.defaultProps = {
+    CurrentUsername: "",
+    LoginUrl: "#",
+    SetUsernameCallback: (username) => {},
+    SetLoginUrlCallback: (url) => {}
+} as NavBarProps
 
 export default NavBar;

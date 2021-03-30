@@ -1,10 +1,10 @@
-import TwitchEmbed from '../../components/TwitchEmbed/TwitchEmbed';
-import Config from '../../services/Config/Config';
+import TwitchEmbed from '../../../components/TwitchEmbed/TwitchEmbed';
+import Config from '../../../services/Config/Config';
 
 import {Container, Row} from 'react-bootstrap';
 
 
-function StreamInfo() {
+function Info() {
     return (
         <Container>
             <Row className="justify-content-center">
@@ -14,4 +14,4 @@ function StreamInfo() {
     );
 }
 
-export default StreamInfo
+export default Info
