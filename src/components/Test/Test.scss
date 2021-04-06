@@ -1,0 +1,12 @@
+.leftColumn, .rightColumn {
+    display: table;
+    width: 50%;
+    text-align: center;
+}
+
+.leftColumn {
+    float: left;
+}
+.rightColumn {
+    float: right;
+}
