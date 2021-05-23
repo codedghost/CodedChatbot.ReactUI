@@ -1,12 +1,4 @@
-export interface ListProps {
-    currentSong: SongRequest,
-    regularQueue: Array<SongRequest>,
-    vipQueue: Array<SongRequest>
-}
+import TwitchAuthBaseModel from '../../../models/TwitchAuthBaseModel';
 
-export interface SongRequest {
-    songId: number,
-    songTitle: string,
-    songArtist: string,
-    requester: string,
+export default interface ListProps extends TwitchAuthBaseModel {
 }

@@ -1,4 +1,5 @@
-export default interface PlaylistHeaderProps {
-    Username: string,
-    LoginUrl: string
+import TwitchAuthBaseModel from '../../../models/TwitchAuthBaseModel'
+
+export default interface PlaylistHeaderProps extends TwitchAuthBaseModel {
+    LoginUrl: string,
 }

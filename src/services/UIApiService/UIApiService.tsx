@@ -1,15 +1,7 @@
-import axios, { AxiosResponse } from 'axios';
-import Config from '../Config/Config';
-
+import TwitchAuthBaseModel from '../../models/TwitchAuthBaseModel';
+import {AxiosGet} from '../UIApiHelperService'
 import {ApiAvailabilityModel, GetLoggedInUserResponse} from './UIApiServiceInterfaces';
 
-function GetUiApiUrl(endpoint: string): string {
-    return `${Config.Api.UI}${endpoint}`;
-}
-
-function AxiosGet<T>(uiEndpoint: string): Promise<AxiosResponse<T>> {
-    return axios.get<T>(GetUiApiUrl(uiEndpoint), {withCredentials: true});
-}
 
 export function CheckApiAvailability(): Promise<boolean> {
     return AxiosGet<ApiAvailabilityModel>("Status").then((request) => {
@@ -27,5 +19,16 @@ export function GetUsername(): Promise<string> {
         })
         .catch(() => {
             return "";
+        });
+}
+
+export function GetAuthBaseModel(): Promise<TwitchAuthBaseModel> {
+    return AxiosGet<TwitchAuthBaseModel>("Moderation/GetAuthBaseModel")
+        .then((response) => {
+            console.log(response.data as TwitchAuthBaseModel)
+            return response.data as TwitchAuthBaseModel;
+        })
+        .catch(() => {
+            return {} as TwitchAuthBaseModel;
         });
 }

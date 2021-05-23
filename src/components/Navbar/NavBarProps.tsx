@@ -1,6 +1,8 @@
+import TwitchAuthBaseModel from '../../models/TwitchAuthBaseModel';
+
 export default interface NavBarProps {
-    CurrentUsername: string,
+    AuthBaseModel: TwitchAuthBaseModel,
     LoginUrl: string,
-    SetUsernameCallback: (username: string) => void;
     SetLoginUrlCallback: (url: string) => void;
+    SetAuthModelCallback: (authBaseModel: TwitchAuthBaseModel) => void;
 }

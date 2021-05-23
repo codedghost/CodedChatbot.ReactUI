@@ -1,6 +1,7 @@
 import './App.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {BrowserRouter, Route} from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import NavBar from './components/Navbar/NavBar';
 
@@ -8,15 +9,16 @@ import Home from './pages/Home/Home';
 import Info from './pages/Stream/Info/Info';
 import Playlist from './pages/Stream/Playlist/Playlist';
 
-function App(){
-  const [username, setUsername] = useState<string>("");
-  const [loginUrl, setLoginUrl] = useState<string>("#");
+import TwitchAuthBaseModel from './models/TwitchAuthBaseModel';
 
+function App(){
+  const [loginUrl, setLoginUrl] = useState<string>("#");
+  const [authBaseModel, setAuthBaseModel] = useState<TwitchAuthBaseModel>();
   
   return (
     <div className="appContent">
       <BrowserRouter>
-        <NavBar CurrentUsername={username} LoginUrl={loginUrl} SetUsernameCallback={setUsername} SetLoginUrlCallback={setLoginUrl}  />
+        <NavBar AuthBaseModel={authBaseModel} LoginUrl={loginUrl} SetLoginUrlCallback={setLoginUrl} SetAuthModelCallback={setAuthBaseModel} />
         <Route exact path="/">
           <Home />
         </Route>
@@ -24,7 +26,7 @@ function App(){
           <Info />
         </Route>
         <Route exact path="/stream/playlist">
-          <Playlist Username={username} LoginUrl={loginUrl} />
+          <Playlist LoginUrl={loginUrl} {...authBaseModel} />
         </Route>
       </BrowserRouter>
     </div>

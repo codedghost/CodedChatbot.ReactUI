@@ -12,20 +12,21 @@ function PlaylistHeader(props: PlaylistHeaderProps) {
 
     const loggedInContent = (
         <div>
-            Welcome {props.Username}!
+            Welcome {props.username}! {props.isModerator ? "You are a moderator, gg!" : ""} You have {props.vips} VIP tokens!
         </div>
     )
 
     return (
         <Alert key="playlist-header" variant="dark">
-            {props.Username === "" ? loggedOutContent : loggedInContent}
+            {props.username === "" ? loggedOutContent : loggedInContent}
         </Alert>
     );
 }
 
 PlaylistHeader.defaultProps = {
-    Username: "",
-    LoginUrl: "#"
+    username: "",
+    LoginUrl: "#",
+    vips: 0
 } as PlaylistHeaderProps;
 
 export default PlaylistHeader;

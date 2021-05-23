@@ -1,6 +1,7 @@
 import { Image, Navbar, Nav, NavDropdown, Container, Col } from "react-bootstrap";
 import Config from "../../services/Config/Config";
-import {CheckApiAvailability, GetUsername} from '../../services/UIApiService/UIApiService';
+import {CheckApiAvailability, GetUsername, GetAuthBaseModel} from '../../services/UIApiService/UIApiService';
+import TwitchAuthBaseModel from '../../models/TwitchAuthBaseModel';
 
 import {useEffect, useState} from 'react';
 import {useLocation, useHistory} from 'react-router-dom';
@@ -22,19 +23,19 @@ function NavBar(props: NavBarProps) {
     const location = useLocation();
     const history = useHistory();
 
+    var loggedIn = props.AuthBaseModel.username === undefined;
+
     useEffect(() => {
-        GetUsername()
-            .then((username) => {
-                props.SetUsernameCallback(username);
+        GetAuthBaseModel()
+            .then((authBaseModel) => {
+                props.SetAuthModelCallback(authBaseModel);
             });
-    }, [props]);
+    }, []);
 
     useEffect(() => {
         CheckApiAvailability().then((isAvailable) => {
-            console.log(isAvailable);
-            console.log(props.CurrentUsername);
             if (isAvailable)
-                props.SetLoginUrlCallback(`${Config.Api.UI}${props.CurrentUsername === "" 
+                props.SetLoginUrlCallback(`${Config.Api.UI}${loggedIn
                     ? `Login?redirectUrl=${location.pathname}` 
                     : `Login/Logout?redirectUrl=${location.pathname}`}`);
             else
@@ -53,7 +54,7 @@ function NavBar(props: NavBarProps) {
                     <Navbar.Collapse id="login-and-socials">
                             <Nav className="nav-container ml-auto">
                                         <Nav.Link href={props.LoginUrl} className="login-link">
-                                                {props.CurrentUsername === "" ? "Login" : `Logout ${props.CurrentUsername}`}
+                                                {loggedIn ? "Login" : `Logout ${props.AuthBaseModel.username}`}
                                         </Nav.Link>
                                         <Nav.Link href="/twitch">
                                             <Image 
@@ -136,10 +137,10 @@ function NavBar(props: NavBarProps) {
 }
 
 NavBar.defaultProps = {
-    CurrentUsername: "",
+    AuthBaseModel: {} as TwitchAuthBaseModel,
     LoginUrl: "#",
-    SetUsernameCallback: (username) => {},
-    SetLoginUrlCallback: (url) => {}
+    SetLoginUrlCallback: (url) => {},
+    SetAuthModelCallback: (authBaseModel) => {}
 } as NavBarProps
 
 export default NavBar;
