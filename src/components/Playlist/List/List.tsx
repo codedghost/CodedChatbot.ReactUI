@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ListProps from './ListProps';
 import { AnimateSharedLayout } from "framer-motion";
 
+import { GetUiApiUrl } from '../../../services/UIApiHelperService';
 import { PlaylistState } from '../../../services/PlaylistService/PlaylistServiceInterfaces';
 import { GetPlaylist } from '../../../services/PlaylistService/PlaylistService';
 import SongItem from './SongItem/SongItem';
@@ -18,9 +19,9 @@ function List(props: ListProps) {
         GetPlaylist().then((data) => {
             updatePlaylist({...data} as PlaylistState);
         });
-    
+
         const hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:49420/SongList")
+            .withUrl(GetUiApiUrl("SongList"))
             .configureLogging(signalR.LogLevel.Information)  
             .build();
     

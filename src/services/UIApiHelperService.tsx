@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import Config from './Config/Config';
 
-function GetUiApiUrl(endpoint: string): string {
+export function GetUiApiUrl(endpoint: string): string {
     return `${Config.Api.UI}${endpoint}`;
 }
 
