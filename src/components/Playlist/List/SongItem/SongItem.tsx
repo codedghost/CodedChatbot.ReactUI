@@ -2,6 +2,7 @@ import { SongRequest } from '../../../../services/PlaylistService/PlaylistServic
 
 import { Equals } from '../../../../services/StringComparisonService/StringComparisonService';
 
+import { Card } from "react-bootstrap";
 import { motion } from "framer-motion";
 
 const spring = {
@@ -15,27 +16,34 @@ function SongItem(props: SongItemProps) {
 
     return props.songRequest.songId > 0 ?
         (
-            <div className="song-container">
-                <motion.div 
-                    key={props.songRequest.songId} 
-                    layout 
-                    transition={spring}
-                    layoutId={props.songRequest.songId.toString()}
-                    >
-                    <div className="song-request">
-                        <span className="song-line-item"><b>Song: </b><p>{props.songRequest.songTitle}</p></span>
-                        <span className="song-line-item"><b>Artist: </b><p>{props.songRequest.songArtist}</p></span>
-                        <span className="song-line-item"><b>Instrument: </b><p>{props.songRequest.instrument}</p></span>
-                        <span className="song-line-item"><b>Requested By: </b><p>{props.songRequest.requester}</p></span>
-                    </div>
-                    <span className="song-actions">
-                        <p>IsEditable: {(props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? "true" : "false"}</p>
-                        <p>IsRemovable: {(props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? "true" : "false"}</p>
-                        <p>CanMarkInDrive: {props.isModerator ? "true" : "false"}</p>
-                        <p>IsPromotable: {(!props.isCurrent && props.isRegular && (props.isModerator || (isUsersRequest && props.vips > 0))) ? "true" : "false"}</p>
-                    </span>
-                </motion.div>
-            </div>)
+            <motion.div 
+                key={props.songRequest.songId} 
+                layout 
+                transition={spring}
+                layoutId={props.songRequest.songId.toString()}
+                className="animated-song-item"
+                >
+                <div className="col-12 song-container">
+                    <Card
+                        body
+                        bg="secondary"
+                        text="light"
+                        >
+                        <div className="song-request">
+                            <span className="song-line-item"><b>Song: </b><p>{props.songRequest.songTitle}</p></span>
+                            <span className="song-line-item"><b>Artist: </b><p>{props.songRequest.songArtist}</p></span>
+                            <span className="song-line-item"><b>Instrument: </b><p>{props.songRequest.instrument}</p></span>
+                            <span className="song-line-item"><b>Requested By: </b><p>{props.songRequest.requester}</p></span>
+                        </div>
+                        <span className="song-actions">
+                            <p>IsEditable: {(props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? "true" : "false"}</p>
+                            <p>IsRemovable: {(props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? "true" : "false"}</p>
+                            <p>CanMarkInDrive: {props.isModerator ? "true" : "false"}</p>
+                            <p>IsPromotable: {(!props.isCurrent && props.isRegular && (props.isModerator || (isUsersRequest && props.vips > 0))) ? "true" : "false"}</p>
+                        </span>
+                    </Card>
+                </div>
+            </motion.div>)
         : (<></>)
 }
 

@@ -6,6 +6,7 @@ import { GetUiApiUrl } from '../../../services/UIApiHelperService';
 import { PlaylistState } from '../../../services/PlaylistService/PlaylistServiceInterfaces';
 import { GetPlaylist } from '../../../services/PlaylistService/PlaylistService';
 import SongItem from './SongItem/SongItem';
+import PlaylistHeader from './PlaylistHeader/PlaylistHeader';
 
 import * as signalR from "@microsoft/signalr";
 
@@ -36,9 +37,7 @@ function List(props: ListProps) {
     }, []);
 
     var vipRequestRender = playlist.vipQueue !== undefined ? playlist.vipQueue.map((r) => (
-        <div className="song-container">
             <SongItem songRequest={r} {...props} isCurrent={false} isRegular={false} />
-        </div>
     )) : [];
 
     var regularRequestRender = playlist.regularQueue !== undefined ?  playlist.regularQueue.map((r) => (
@@ -49,28 +48,22 @@ function List(props: ListProps) {
         <div>
             <AnimateSharedLayout>
                 <div className="current">
-                    <div className="header">
-                        <b>Current Song</b>
-                    </div>
+                    <PlaylistHeader HeaderText="Current Song" />
                     <div className="song-container">
                         <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} />
                     </div>
                 </div>
                 
-                <div className="lists-container">
-                    <div className="vip-container">
-                        <div className="header">
-                            <b>VIP Song Requests</b>
-                        </div>
+                <div className="row lists-container">
+                    <div className="col-6 vip-container">
+                        <PlaylistHeader HeaderText="VIP Song Requests" />
                         <div className="queue-container">
                             {vipRequestRender}
                         </div>
                     </div>
-                    <div className="regular-container">
-                        <div className="header">
-                            <b>Song Requests</b>
-                        </div>
-                        <div className="queue-contaimer">
+                    <div className="col-6 regular-container">
+                        <PlaylistHeader HeaderText="Song Requests" />
+                        <div className="queue-container">
                             {regularRequestRender}
                         </div>
                     </div>
