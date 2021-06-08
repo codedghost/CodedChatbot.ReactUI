@@ -12,9 +12,9 @@ const spring = {
   };
 
 function SongItem(props: SongItemProps) {
-    var isUsersRequest = Equals(props.songRequest.requester, props.username);
+    var isUsersRequest = Equals(props.songRequest?.requester, props.username);
 
-    return props.songRequest.songId > 0 ?
+    return (props?.songRequest?.songId ?? 0) > 0 ?
         (
             <motion.div 
                 key={props.songRequest.songId} 
