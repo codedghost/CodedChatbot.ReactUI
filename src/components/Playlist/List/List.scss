@@ -1,0 +1,44 @@
+$odd-item-color: #404040;
+$even-item-color: #202020;
+
+.song-line-item {
+    display: block;
+
+    b, p {
+        display: inline;
+    }
+}
+
+.header {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 15%;
+
+    .card {
+        width: 100%;
+            background-color: $odd-item-color!important;
+            
+            .card-body {
+                padding: 0.5rem;
+                text-align: center;
+            }
+    }
+}
+
+.song-container {
+    padding-bottom: 1rem;
+
+}
+
+.animated-song-item{
+    &:nth-child(even) {
+        .card {
+            background-color: $even-item-color!important;
+        }
+    }
+    &:nth-child(odd) {
+        .card {
+            background-color: $odd-item-color!important;
+        }
+    }
+}
