@@ -1,7 +1,7 @@
 window.Config = {
     "ChannelName": "CodedGhost2",
     "Api": {
-        "UI": "https://codedghost.com",
+        "UI": "https://webapi.codedghost.com",
         "Backend": "https://api.codedghost.com"
     }
 }
