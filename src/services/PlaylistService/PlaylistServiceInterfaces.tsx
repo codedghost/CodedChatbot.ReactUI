@@ -10,5 +10,6 @@ export interface SongRequest {
     songTitle: string,
     songArtist: string,
     instrument: string,
-    requester: string
+    requester: string,
+    isInDrive: boolean
 }

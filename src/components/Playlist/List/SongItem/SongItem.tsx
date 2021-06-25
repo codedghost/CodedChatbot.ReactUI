@@ -2,8 +2,16 @@ import { SongRequest } from '../../../../services/PlaylistService/PlaylistServic
 
 import { Equals } from '../../../../services/StringComparisonService/StringComparisonService';
 
+import ActionIcon from './ActionIcon';
+
 import { Card } from "react-bootstrap";
 import { motion } from "framer-motion";
+
+import EditIcon from '../../../../pngs/PlaylistEdit.png';
+import RemoveIcon from '../../../../pngs/axe-18.png';
+import InDriveIcon from '../../../../pngs/RequestInDrive.png';
+import AddToDriveIcon from '../../../../pngs/RequestSetInDrive.png';
+import PromoteIcon from '../../../../pngs/up-arrow.png';
 
 const spring = {
     type: "spring",
@@ -13,6 +21,24 @@ const spring = {
 
 function SongItem(props: SongItemProps) {
     var isUsersRequest = Equals(props.songRequest.requester, props.username);
+
+    var editButton = (props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? (
+        <ActionIcon Icon={EditIcon} AltText={`Edit ${props.songRequest.songTitle}`} />
+    ) : (<></>);
+
+    var deleteButton = (props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? (
+        <ActionIcon Icon={RemoveIcon} AltText={`Remove ${props.songRequest.songTitle}`} />
+    ) : (<></>);
+
+    var markInDriveButton = props.songRequest.isInDrive ? 
+        (<ActionIcon Icon={InDriveIcon} AltText={`${props.songRequest.songTitle} is already "in the drive"`} />) :
+        props.isModerator ? 
+            (<ActionIcon Icon={AddToDriveIcon} AltText={`Mark ${props.songRequest.songTitle} as "in the drive"`} />) : 
+            (<></>);
+
+    var promotableButton = (!props.isCurrent && props.isRegular && (props.isModerator || (isUsersRequest && props.vips > 0))) ?
+        (<ActionIcon Icon={PromoteIcon} AltText={`Promote ${props.songRequest.songTitle} to VIP queue`} />) :
+        (<></>)
 
     return props.songRequest.songId > 0 ?
         (
@@ -36,10 +62,10 @@ function SongItem(props: SongItemProps) {
                             <span className="song-line-item"><b>Requested By: </b><p>{props.songRequest.requester}</p></span>
                         </div>
                         <span className="song-actions">
-                            <p>IsEditable: {(props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? "true" : "false"}</p>
-                            <p>IsRemovable: {(props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? "true" : "false"}</p>
-                            <p>CanMarkInDrive: {props.isModerator ? "true" : "false"}</p>
-                            <p>IsPromotable: {(!props.isCurrent && props.isRegular && (props.isModerator || (isUsersRequest && props.vips > 0))) ? "true" : "false"}</p>
+                            {editButton}
+                            {deleteButton}
+                            {markInDriveButton}
+                            {promotableButton}
                         </span>
                     </Card>
                 </div>
@@ -53,7 +79,8 @@ SongItem.defaultProps = {
         songTitle: "",
         songArtist: "",
         instrument: "",
-        requester: ""
+        requester: "",
+        isInDrive: false
     } as SongRequest,
     isModerator: false,
     username: "",
