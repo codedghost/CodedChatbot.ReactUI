@@ -1,7 +1,6 @@
 import './App.scss';
 import { useState, useEffect } from 'react';
 import {BrowserRouter, Route} from 'react-router-dom';
-import Cookies from 'js-cookie';
 
 import NavBar from './components/Navbar/NavBar';
 

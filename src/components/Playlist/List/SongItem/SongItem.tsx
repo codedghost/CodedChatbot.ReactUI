@@ -20,7 +20,7 @@ const spring = {
   };
 
 function SongItem(props: SongItemProps) {
-    var isUsersRequest = Equals(props.songRequest.requester, props.username);
+    var isUsersRequest = Equals(props.songRequest?.requester, props.username);
 
     var editButton = (props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? (
         <ActionIcon Icon={EditIcon} AltText={`Edit ${props.songRequest.songTitle}`} />
