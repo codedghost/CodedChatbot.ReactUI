@@ -44,16 +44,13 @@ function List(props: ListProps) {
             <SongItem songRequest={r} {...props} isCurrent={false} isRegular={true} />
     )) : [];
 
-    var currentSongRender = playlist.currentSong !== undefined ? 
-        <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} /> : (<></>)
-
     return (
         <div>
             <AnimateSharedLayout>
                 <div className="current">
                     <PlaylistHeader HeaderText="Current Song" />
                     <div className="song-container">
-                        {currentSongRender}
+                        <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} />
                     </div>
                 </div>
                 

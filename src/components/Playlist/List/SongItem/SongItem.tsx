@@ -20,6 +20,9 @@ const spring = {
   };
 
 function SongItem(props: SongItemProps) {
+    if (props.songRequest === undefined) {
+        return (<></>);
+    }
     var isUsersRequest = Equals(props.songRequest?.requester, props.username);
 
     var editButton = (props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? (
