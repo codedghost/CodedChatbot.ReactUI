@@ -36,7 +36,7 @@ TwitchEmbed.defaultProps = {
     targetId: 'twitch-embed',
     width: '940',
     height: '480',
-    channel: Config.ChannelName
+    channel: ""
 } as TwitchEmbedProps
 
 export default TwitchEmbed;
