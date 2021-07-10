@@ -23,7 +23,7 @@ function NavBar(props: NavBarProps) {
 
     const location = useLocation();
 
-    var loggedIn = props.AuthBaseModel.username === undefined;
+    var loggedIn = props.AuthBaseModel?.username === undefined || props.AuthBaseModel?.username === null;
 
     useEffect(() => {
         GetAuthBaseModel()

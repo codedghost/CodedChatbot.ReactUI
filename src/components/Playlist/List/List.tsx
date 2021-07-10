@@ -14,6 +14,7 @@ import './List.scss';
 
 function List(props: ListProps) {
     const [playlist, updatePlaylist] = useState<PlaylistState>({} as PlaylistState);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     useEffect(() => {
         // Get initial Playlist State
@@ -29,10 +30,14 @@ function List(props: ListProps) {
         hubConnection.start();
     
         hubConnection.on("UpdateClients", (currentSong, regularQueue, vipQueue) => {
-            console.log(currentSong);
             var playlistState = {currentSong: currentSong, regularQueue: regularQueue, vipQueue: vipQueue} as PlaylistState;
     
             updatePlaylist(playlistState);
+        });
+
+        hubConnection.on("PlaylistState", (isOpen) => {
+            var castIsOpen = isOpen as boolean;
+            setIsOpen(castIsOpen)
         });
     }, []);
 
@@ -48,7 +53,7 @@ function List(props: ListProps) {
         <div>
             <AnimateSharedLayout>
                 <div className="current">
-                    <PlaylistHeader HeaderText="Current Song" />
+                    <PlaylistHeader HeaderText={`Current Song (${isOpen ? "Playlist OPEN" : "Playlist CLOSED"})`} />
                     <div className="song-container">
                         <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} />
                     </div>
