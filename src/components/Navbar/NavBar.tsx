@@ -1,10 +1,11 @@
-import { Image, Navbar, Nav, NavDropdown, Container, Col } from "react-bootstrap";
+import { Image, Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
 import Config from "../../services/Config/Config";
-import {CheckApiAvailability, GetUsername, GetAuthBaseModel} from '../../services/UIApiService/UIApiService';
+import {CheckApiAvailability, GetAuthBaseModel} from '../../services/UIApiService/UIApiService';
 import TwitchAuthBaseModel from '../../models/TwitchAuthBaseModel';
+import GoToPage from '../../services/NavService/NavService';
 
 import {useEffect, useState} from 'react';
-import {useLocation, useHistory} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import NavBarProps from './NavBarProps';
 
@@ -21,7 +22,6 @@ function NavBar(props: NavBarProps) {
     const [showSoftwareDropdown, setSoftwareDropdown] = useState<boolean>(false);
 
     const location = useLocation();
-    const history = useHistory();
 
     var loggedIn = props.AuthBaseModel.username === undefined;
 
@@ -42,10 +42,6 @@ function NavBar(props: NavBarProps) {
                 props.SetLoginUrlCallback("#");
         })
     }, [props, location.pathname]);
-
-    function GoToPage(url: string) {
-        history.push(url);
-    }
 
     return (
         <div>
