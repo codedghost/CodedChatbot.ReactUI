@@ -20,7 +20,7 @@ const spring = {
   };
 
 function SongItem(props: SongItemProps) {
-    if (props.songRequest === undefined) {
+    if (props.songRequest === undefined || props.songRequest === null) {
         return (<></>);
     }
     var isUsersRequest = Equals(props.songRequest?.requester, props.username);
@@ -33,11 +33,12 @@ function SongItem(props: SongItemProps) {
         <ActionIcon Icon={RemoveIcon} AltText={`Remove ${props.songRequest.songTitle}`} />
     ) : (<></>);
 
-    var markInDriveButton = props.songRequest.isInDrive ? 
-        (<ActionIcon Icon={InDriveIcon} AltText={`${props.songRequest.songTitle} is already "in the drive"`} />) :
-        props.isModerator ? 
-            (<ActionIcon Icon={AddToDriveIcon} AltText={`Mark ${props.songRequest.songTitle} as "in the drive"`} />) : 
-            (<></>);
+    var markInDriveButton = 
+        props.isModerator ?
+            props.songRequest.isInDrive ? 
+                (<ActionIcon Icon={InDriveIcon} AltText={`${props.songRequest.songTitle} is already "in the drive"`} />) :
+                (<ActionIcon Icon={AddToDriveIcon} AltText={`Mark ${props.songRequest.songTitle} as "in the drive"`} />) 
+            : (<></>);
 
     var promotableButton = (!props.isCurrent && props.isRegular && (props.isModerator || (isUsersRequest && props.vips > 0))) ?
         (<ActionIcon Icon={PromoteIcon} AltText={`Promote ${props.songRequest.songTitle} to VIP queue`} />) :
