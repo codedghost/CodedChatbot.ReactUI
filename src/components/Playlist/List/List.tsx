@@ -1,45 +1,50 @@
 import { useEffect, useState } from 'react';
 import ListProps from './ListProps';
 import { AnimateSharedLayout } from "framer-motion";
-
-import { GetUiApiUrl } from '../../../services/UIApiHelperService';
 import { PlaylistState } from '../../../services/PlaylistService/PlaylistServiceInterfaces';
 import { GetPlaylist } from '../../../services/PlaylistService/PlaylistService';
 import SongItem from './SongItem/SongItem';
 import PlaylistHeader from './PlaylistHeader/PlaylistHeader';
 
-import * as signalR from "@microsoft/signalr";
+import { IsNullOrWhiteSpace } from '../../../services/StringHelperService';
 
 import './List.scss';
+import UserPlaylistInfo from '../../../models/UserPlaylistInfo';
 
 function List(props: ListProps) {
     const [playlist, updatePlaylist] = useState<PlaylistState>({} as PlaylistState);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [playlistState, setPlaylistState] = useState<string>("Closed");
 
     useEffect(() => {
         // Get initial Playlist State
         GetPlaylist().then((data) => {
             updatePlaylist({...data} as PlaylistState);
         });
-
-        const hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl(GetUiApiUrl("SongList"))
-            .configureLogging(signalR.LogLevel.Information)  
-            .build();
-    
-        hubConnection.start();
-    
-        hubConnection.on("UpdateClients", (currentSong, regularQueue, vipQueue) => {
-            var playlistState = {currentSong: currentSong, regularQueue: regularQueue, vipQueue: vipQueue} as PlaylistState;
-    
-            updatePlaylist(playlistState);
-        });
-
-        hubConnection.on("PlaylistState", (isOpen) => {
-            var castIsOpen = isOpen as boolean;
-            setIsOpen(castIsOpen)
-        });
     }, []);
+
+    useEffect(() => {
+        if(props.hubConnection !== undefined) {
+            props.hubConnection.on("UpdateClients", (currentSong, regularQueue, vipQueue) => {
+                var playlistState = {currentSong: currentSong, regularQueue: regularQueue, vipQueue: vipQueue} as PlaylistState;
+        
+                updatePlaylist(playlistState);
+            });
+
+            props.hubConnection.on("PlaylistState", (newState) => {
+                console.log(newState);
+                var castNewState = newState as string;
+                setPlaylistState(castNewState)
+            });
+
+            props.hubConnection.on("Heartbeat", () => {
+                console.log("conn alive");
+            });
+        }
+    }, [props.hubConnection]);
+
+    useEffect(() => {
+        setPlaylistState(props.UserPlaylistInfo.playlistState);
+    }, [props.UserPlaylistInfo.playlistState])
 
     var vipRequestRender = playlist.vipQueue !== undefined ? playlist.vipQueue.map((r) => (
             <SongItem songRequest={r} {...props} isCurrent={false} isRegular={false} />
@@ -53,7 +58,7 @@ function List(props: ListProps) {
         <div>
             <AnimateSharedLayout>
                 <div className="current">
-                    <PlaylistHeader HeaderText={`Current Song (${isOpen ? "Playlist OPEN" : "Playlist CLOSED"})`} />
+                    <PlaylistHeader HeaderText={`Current Song (Playlist is ${(IsNullOrWhiteSpace(playlistState) ? "" : playlistState).toUpperCase()})`} />
                     <div className="song-container">
                         <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} />
                     </div>
@@ -82,7 +87,7 @@ function List(props: ListProps) {
 List.defaultProps = {
     username: '',
     isModerator: false,
-    vips: 0
+    UserPlaylistInfo: {} as UserPlaylistInfo
 } as ListProps
 
 export default List;

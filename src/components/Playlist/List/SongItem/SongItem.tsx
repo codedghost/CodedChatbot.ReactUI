@@ -46,7 +46,7 @@ function SongItem(props: SongItemProps) {
 
     return props.songRequest.songId > 0 ?
         (
-            <motion.div 
+            <motion.div
                 key={props.songRequest.songId} 
                 layout 
                 transition={spring}

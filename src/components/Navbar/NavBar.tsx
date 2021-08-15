@@ -2,10 +2,9 @@ import { Image, Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
 import Config from "../../services/Config/Config";
 import {CheckApiAvailability, GetAuthBaseModel} from '../../services/UIApiService/UIApiService';
 import TwitchAuthBaseModel from '../../models/TwitchAuthBaseModel';
-import GoToPage from '../../services/NavService/NavService';
 
 import {useEffect, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useHistory} from 'react-router-dom';
 
 import NavBarProps from './NavBarProps';
 
@@ -22,6 +21,7 @@ function NavBar(props: NavBarProps) {
     const [showSoftwareDropdown, setSoftwareDropdown] = useState<boolean>(false);
 
     const location = useLocation();
+    const history = useHistory();
 
     var loggedIn = props.AuthBaseModel?.username === undefined || props.AuthBaseModel?.username === null;
 
@@ -103,7 +103,7 @@ function NavBar(props: NavBarProps) {
                                     show={showStreamDropdown}
                                     onMouseEnter={() => setStreamDropdown(true)}
                                     onMouseLeave={() => setStreamDropdown(false)}
-                                    onClick={() => GoToPage("/stream/info")}>
+                                    onClick={() => history.push("/stream/info")}>
                                         <NavDropdown.Item href="/stream/info" className="navbar-header">Info</NavDropdown.Item>
                                         <NavDropdown.Item href="/stream/playlist">Playlist</NavDropdown.Item>
                                         <NavDropdown.Item href="/stream/library">Library</NavDropdown.Item>
@@ -116,7 +116,7 @@ function NavBar(props: NavBarProps) {
                                     show={showSoftwareDropdown}
                                     onMouseEnter={() => setSoftwareDropdown(true)}
                                     onMouseLeave={() => setSoftwareDropdown(false)}
-                                    onClick={() => GoToPage("/software/development")}>
+                                    onClick={() => history.push("/software/development")}>
                                         <NavDropdown.Item href="/software/development">Development</NavDropdown.Item>
                                         <NavDropdown.Item href="/software/current-month">Current Month</NavDropdown.Item>
                                         <NavDropdown.Item href="/software/raise-a-bug">Raise a Bug</NavDropdown.Item>

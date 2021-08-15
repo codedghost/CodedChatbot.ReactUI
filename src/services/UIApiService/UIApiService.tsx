@@ -1,4 +1,5 @@
 import TwitchAuthBaseModel from '../../models/TwitchAuthBaseModel';
+import UserPlaylistInfo from '../../models/UserPlaylistInfo';
 import {AxiosGet} from '../UIApiHelperService'
 import {ApiAvailabilityModel, GetLoggedInUserResponse} from './UIApiServiceInterfaces';
 
@@ -30,5 +31,16 @@ export function GetAuthBaseModel(): Promise<TwitchAuthBaseModel> {
         })
         .catch(() => {
             return {} as TwitchAuthBaseModel;
+        });
+}
+
+export function RetrieveUserPlaylistInfo(): Promise<UserPlaylistInfo> {
+    return AxiosGet<UserPlaylistInfo>("Playlist/GetUserInfo")
+        .then((response) => {
+            console.log(response.data as UserPlaylistInfo);
+            return response.data as UserPlaylistInfo;
+        })
+        .catch(() => {
+            return {} as UserPlaylistInfo;
         });
 }

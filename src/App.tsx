@@ -8,11 +8,15 @@ import Home from './pages/Home/Home';
 import Info from './pages/Stream/Info/Info';
 import Playlist from './pages/Stream/Playlist/Playlist';
 
+import GetUserPlaylistInfo from './components/GetUserPlaylistInfo/GetUserPlaylistInfo';
+
 import TwitchAuthBaseModel from './models/TwitchAuthBaseModel';
+import UserPlaylistInfo from './models/UserPlaylistInfo';
 
 function App(){
   const [loginUrl, setLoginUrl] = useState<string>("#");
   const [authBaseModel, setAuthBaseModel] = useState<TwitchAuthBaseModel>();
+  const [userPlaylistInfo, setUserPlaylistInfo] = useState<UserPlaylistInfo>();
   
   return (
     <div className="appContent">
@@ -25,7 +29,8 @@ function App(){
           <Info />
         </Route>
         <Route exact path="/stream/playlist">
-          <Playlist LoginUrl={loginUrl} {...authBaseModel} />
+          <GetUserPlaylistInfo SetUserPlaylistInfoCallback={setUserPlaylistInfo} />
+          <Playlist LoginUrl={loginUrl} UserPlaylistInfo={userPlaylistInfo} {...authBaseModel} />
         </Route>
       </BrowserRouter>
     </div>
