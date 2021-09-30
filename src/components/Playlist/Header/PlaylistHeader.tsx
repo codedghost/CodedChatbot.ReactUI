@@ -7,18 +7,26 @@ import PlaylistHeaderProps from './PlaylistHeaderProps';
 
 function PlaylistHeader(props: PlaylistHeaderProps) {
     const [totalVips, updateTotalVips] = useState<number>(0);
+    const [totalBytes, updateTotalBytes] = useState<string>("0");
 
     useEffect(() => {
         if(props.hubConnection !== undefined) {
             props.hubConnection.on("UpdateVips", (vipTotal) => {
                 updateTotalVips(vipTotal);
             });
+            props.hubConnection.on("UpdateBytes", (byteTotal) => {
+                updateTotalBytes(byteTotal);
+            });
         }
     }, [props.hubConnection]);
 
     useEffect(() => {
         updateTotalVips(props.UserPlaylistInfo.vips);
-    }, [props.UserPlaylistInfo.vips])
+    }, [props.UserPlaylistInfo.vips]);
+
+    useEffect(() => {
+        updateTotalBytes(props.UserPlaylistInfo.bytes);
+    }, [props.UserPlaylistInfo.bytes]);
 
     const loggedOutContent = (
         <div>
@@ -28,7 +36,7 @@ function PlaylistHeader(props: PlaylistHeaderProps) {
 
     const loggedInContent = (
         <div>
-            Welcome {props.username}! {props.isModerator ? "You are a moderator, gg!" : ""} You have {totalVips} VIP tokens!
+            Welcome {props.username}! {props.isModerator ? "You are a moderator, gg!" : ""} You have {totalVips} VIP tokens and {totalBytes} Bytes!
         </div>
     )
     
@@ -44,7 +52,8 @@ PlaylistHeader.defaultProps = {
     username: "",
     LoginUrl: "#",
     UserPlaylistInfo: {
-        vips: 0
+        vips: 0,
+        bytes: "0"
     } as UserPlaylistInfo
 } as PlaylistHeaderProps;
 
