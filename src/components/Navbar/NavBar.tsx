@@ -46,9 +46,9 @@ function NavBar(props: NavBarProps) {
     return (
         <div>
             <Navbar variant="dark" className="login-bar">
-                <Container>
-                    <Navbar.Collapse id="login-and-socials">
-                            <Nav className="nav-container ml-auto">
+                <Container fluid>
+                    <Navbar.Collapse id="login-and-socials" className="justify-content-end">
+                            <Nav>
                                         <Nav.Link href={props.LoginUrl} className="login-link">
                                                 {loggedIn ? "Login" : `Logout ${props.AuthBaseModel.username}`}
                                         </Nav.Link>
@@ -92,10 +92,11 @@ function NavBar(props: NavBarProps) {
                 </Container>
             </Navbar>
             <Navbar expand="md" variant="dark" className="main-navbar">
-                <Navbar.Brand></Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="main-nav">
-                        <Nav className="ml-auto">
+                <Container fluid>
+                    <Navbar.Brand></Navbar.Brand>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Collapse id="main-nav" className="justify-content-end">
+                        <Nav>
                                 <Nav.Link href="/">Home</Nav.Link>
                                 <NavDropdown 
                                     title="Stream" 
@@ -126,7 +127,8 @@ function NavBar(props: NavBarProps) {
                                 <Nav.Link href="/news">News</Nav.Link>
                                 <Nav.Link href="/about">About</Nav.Link>
                         </Nav>
-                </Navbar.Collapse>
+                    </Navbar.Collapse>
+                </Container>
             </Navbar>
         </div>
     );
