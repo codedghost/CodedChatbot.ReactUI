@@ -8,7 +8,7 @@ export const Types = {
 
 export const Colours = {
     Yellow: "yellow",
-    Red: "#bd0000",
+    Red: "#df2525",
     Green: "green"
 };
 
