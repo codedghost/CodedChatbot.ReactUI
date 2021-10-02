@@ -4,8 +4,10 @@ import { Equals } from '../../../../services/StringComparisonService/StringCompa
 
 import ActionIcon from './ActionIcon';
 
-import { Card } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import { motion } from "framer-motion";
+
+import * as IconEnums from "./IconEnums";
 
 import EditIcon from '../../../../pngs/PlaylistEdit.png';
 import RemoveIcon from '../../../../pngs/axe-18.png';
@@ -26,23 +28,23 @@ function SongItem(props: SongItemProps) {
     var isUsersRequest = Equals(props.songRequest?.requester, props.username);
 
     var editButton = (props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? (
-        <ActionIcon Icon={EditIcon} AltText={`Edit ${props.songRequest.songTitle}`} />
+        <ActionIcon Icon={IconEnums.Types.Edit} Colour={IconEnums.Colours.Yellow} Size={IconEnums.Sizes.Medium} AltText={`Edit ${props.songRequest.songTitle}`} />
     ) : (<></>);
 
     var deleteButton = (props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? (
-        <ActionIcon Icon={RemoveIcon} AltText={`Remove ${props.songRequest.songTitle}`} />
+        <ActionIcon Icon={IconEnums.Types.Remove} Colour={IconEnums.Colours.Red} Size={IconEnums.Sizes.Medium} AltText={`Remove ${props.songRequest.songTitle}`} />
     ) : (<></>);
 
     var markInDriveButton = 
         props.isModerator ?
             props.songRequest.isInDrive ? 
-                (<ActionIcon Icon={InDriveIcon} AltText={`${props.songRequest.songTitle} is already "in the drive"`} />) :
-                (<ActionIcon Icon={AddToDriveIcon} AltText={`Mark ${props.songRequest.songTitle} as "in the drive"`} />) 
+                (<ActionIcon Icon={IconEnums.Types.InDrive} Colour={IconEnums.Colours.Green} Size={IconEnums.Sizes.Medium} AltText={`${props.songRequest.songTitle} is already "in the drive"`} />) :
+                (<ActionIcon Icon={IconEnums.Types.NotInDrive} Colour={IconEnums.Colours.Red} Size={IconEnums.Sizes.Medium} AltText={`Mark ${props.songRequest.songTitle} as "in the drive"`} />) 
             : (<></>);
 
     var promotableButton = (!props.isCurrent && props.isRegular && (props.isModerator || (isUsersRequest && props.vips > 0))) ?
-        (<ActionIcon Icon={PromoteIcon} AltText={`Promote ${props.songRequest.songTitle} to VIP queue`} />) :
-        (<></>)
+        (<ActionIcon Icon={IconEnums.Types.Promote} Colour={IconEnums.Colours.Yellow} Size={IconEnums.Sizes.Medium} AltText={`Promote ${props.songRequest.songTitle} to VIP queue`} />) :
+        (<></>);
 
     return props.songRequest.songId > 0 ?
         (
@@ -59,18 +61,20 @@ function SongItem(props: SongItemProps) {
                         bg="secondary"
                         text="light"
                         >
-                        <div className="song-request">
-                            <span className="song-line-item"><b>Song: </b><p>{props.songRequest.songTitle}</p></span>
-                            <span className="song-line-item"><b>Artist: </b><p>{props.songRequest.songArtist}</p></span>
-                            <span className="song-line-item"><b>Instrument: </b><p>{props.songRequest.instrument}</p></span>
-                            <span className="song-line-item"><b>Requested By: </b><p>{props.songRequest.requester}</p></span>
-                        </div>
-                        <span className="song-actions">
-                            {editButton}
-                            {deleteButton}
-                            {markInDriveButton}
-                            {promotableButton}
-                        </span>
+                            <div className="d-flex justify-content-between">
+                            <div>
+                                <span className="song-line-item"><b>Song: </b><p>{props.songRequest.songTitle}</p></span>
+                                <span className="song-line-item"><b>Artist: </b><p>{props.songRequest.songArtist}</p></span>
+                                <span className="song-line-item"><b>Instrument: </b><p>{props.songRequest.instrument}</p></span>
+                                <span className="song-line-item"><b>Requested By: </b><p>{props.songRequest.requester}</p></span>
+                            </div>
+                            <span className="d-flex flex-column">
+                                {editButton}
+                                {deleteButton}
+                                {markInDriveButton}
+                                {promotableButton}
+                            </span>
+                            </div>
                     </Card>
                 </div>
             </motion.div>)
