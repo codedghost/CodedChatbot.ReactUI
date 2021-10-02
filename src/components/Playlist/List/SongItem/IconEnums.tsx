@@ -3,7 +3,8 @@ export const Types = {
     NotInDrive: "bi bi-cloud-plus-fill",
     InDrive: "bi bi-cloud-check-fill",
     Remove: "bi bi-eraser-fill",
-    Promote: "bi bi-capslock-fill"
+    Promote: "bi bi-capslock-fill",
+    LeftChat: "bi bi-door-open-fill"
 };
 
 export const Colours = {

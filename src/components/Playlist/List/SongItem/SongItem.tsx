@@ -9,12 +9,6 @@ import { motion } from "framer-motion";
 
 import * as IconEnums from "./IconEnums";
 
-import EditIcon from '../../../../pngs/PlaylistEdit.png';
-import RemoveIcon from '../../../../pngs/axe-18.png';
-import InDriveIcon from '../../../../pngs/RequestInDrive.png';
-import AddToDriveIcon from '../../../../pngs/RequestSetInDrive.png';
-import PromoteIcon from '../../../../pngs/up-arrow.png';
-
 const spring = {
     type: "spring",
     damping: 20,
@@ -46,6 +40,8 @@ function SongItem(props: SongItemProps) {
         (<ActionIcon Icon={IconEnums.Types.Promote} Colour={IconEnums.Colours.Yellow} Size={IconEnums.Sizes.Medium} AltText={`Promote ${props.songRequest.songTitle} to VIP queue`} />) :
         (<></>);
 
+    var userNotInChat = (props.songRequest.isInChat) ? (<></>) : (<ActionIcon Icon={IconEnums.Types.LeftChat} Colour={IconEnums.Colours.Red} Size={IconEnums.Sizes.Medium} AltText={`User ${props.songRequest.requester} has left chat`} />);
+
     return props.songRequest.songId > 0 ?
         (
             <motion.div
@@ -73,6 +69,7 @@ function SongItem(props: SongItemProps) {
                                 {deleteButton}
                                 {markInDriveButton}
                                 {promotableButton}
+                                {userNotInChat}
                             </span>
                             </div>
                     </Card>
@@ -88,7 +85,8 @@ SongItem.defaultProps = {
         songArtist: "",
         instrument: "",
         requester: "",
-        isInDrive: false
+        isInDrive: false,
+        isInChat: false
     } as SongRequest,
     isModerator: false,
     username: "",
@@ -103,7 +101,7 @@ export interface SongItemProps {
     isModerator: boolean,
     vips: number,
     isCurrent: boolean,
-    isRegular: boolean
+    isRegular: boolean,
 }
 
 export default SongItem;
