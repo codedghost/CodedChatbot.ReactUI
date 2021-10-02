@@ -4,7 +4,7 @@ import { Equals } from '../../../../services/StringComparisonService/StringCompa
 
 import ActionIcon from './ActionIcon';
 
-import { Card, Col, Row } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { motion } from "framer-motion";
 
 import * as IconEnums from "./IconEnums";

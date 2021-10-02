@@ -1,5 +1,3 @@
-import Config from '../../services/Config/Config';
-
 import { useEffect } from 'react';
 import TwitchEmbedProps from './TwitchEmbedProps';
 
