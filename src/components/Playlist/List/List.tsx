@@ -12,8 +12,9 @@ import { IsNullOrWhiteSpace } from '../../../services/StringHelperService';
 
 import './List.scss';
 import UserPlaylistInfo from '../../../models/UserPlaylistInfo';
-import { SubmitEditRequest } from '../../../services/UIApiService/UIApiService';
+import { SubmitEditRequest, SubmitRemoveRequest } from '../../../services/UIApiService/UIApiService';
 import { Equals } from '../../../services/StringComparisonService/StringComparisonService';
+import { RemoveRequestModal } from '../../Modals/RemoveRequestModal';
 
 function List(props: ListProps) {
     const [playlist, updatePlaylist] = useState<PlaylistState>({} as PlaylistState);
@@ -21,6 +22,9 @@ function List(props: ListProps) {
     
     const [showEditRequestModal, setShowEditRequestModal] = useState(false);
     const [editRequestOptions, setEditRequestOptions] = useState<RequestOptions>(_defaultRequestOptions);
+
+    const [showRemoveRequestModal, setShowRemoveRequestModal] = useState(false);
+    const [removeRequestOptions, setRemoveRequestOptions] = useState<RequestOptions>(_defaultRequestOptions);
 
     useEffect(() => {
         // Get initial Playlist State
@@ -53,18 +57,18 @@ function List(props: ListProps) {
         setPlaylistState(props.UserPlaylistInfo.playlistState);
     }, [props.UserPlaylistInfo.playlistState])
 
-    var closeAndResetModal = function () {
+    var closeAndResetEditModal = function () {
         setEditRequestOptions(_defaultRequestOptions);
         setShowEditRequestModal(false);
     }
     
-    const handleSendRequest = function() {
+    const handleSendEditRequest = function() {
         SubmitEditRequest(editRequestOptions).then((result) => {
             console.log(result);
             console.log(Equals(result, "success"));
             if (Equals(result, "success"))
             {
-                closeAndResetModal();
+                closeAndResetEditModal();
             } else {
                 console.log("hit else block");
                 setEditRequestOptions(
@@ -81,12 +85,37 @@ function List(props: ListProps) {
         setShowEditRequestModal(true);
     };
 
+    var closeAndResetRemoveModal = function () {
+        setRemoveRequestOptions(_defaultRequestOptions);
+        setShowRemoveRequestModal(false);
+    }
+
+    const handleSendRemoveRequest = function() {
+        SubmitRemoveRequest(removeRequestOptions).then((result) => {
+            console.log(result);
+            if (Equals(result, "success")) {
+                closeAndResetRemoveModal();
+            } else {
+                setRemoveRequestOptions(
+                    {
+                        ...removeRequestOptions,
+                        errorMessage: result
+                    } as RequestOptions);
+            }
+        });
+    }
+
+    var onRemoveClick = function(request: RequestOptions) {
+        setRemoveRequestOptions(request);
+        setShowRemoveRequestModal(true);
+    }
+
     var vipRequestRender = playlist.vipQueue !== undefined ? playlist.vipQueue.map((r) => (
-            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={false} onEdit={onEditClick} />
+            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={false} onEdit={onEditClick} onRemove={onRemoveClick} />
     )) : [];
 
     var regularRequestRender = playlist.regularQueue !== undefined ?  playlist.regularQueue.map((r) => (
-            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={true} onEdit={onEditClick} />
+            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={true} onEdit={onEditClick} onRemove={onRemoveClick} />
     )) : [];
 
     return (
@@ -94,17 +123,22 @@ function List(props: ListProps) {
             <div id="modal-container">
                 <RequestModal 
                     show={showEditRequestModal} 
-                    changeShow={closeAndResetModal} 
+                    changeShow={closeAndResetEditModal} 
                     requestOptions={editRequestOptions}
                     updateRequestOptions={setEditRequestOptions}
                     isAddRequest={false}
-                    sendRequest={handleSendRequest} />
+                    sendRequest={handleSendEditRequest} />
+                <RemoveRequestModal
+                    show={showRemoveRequestModal}
+                    changeShow={closeAndResetRemoveModal}
+                    requestOptions={removeRequestOptions}
+                    sendRequest={handleSendRemoveRequest} />
             </div>
             <AnimateSharedLayout>
                 <div className="current">
                     <PlaylistHeader HeaderText={`Current Song (Playlist is ${(IsNullOrWhiteSpace(playlistState) ? "" : playlistState).toUpperCase()})`} />
                     <div className="song-container">
-                        <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} onEdit={onEditClick} />
+                        <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} onEdit={onEditClick} onRemove={onRemoveClick} />
                     </div>
                 </div>
                 

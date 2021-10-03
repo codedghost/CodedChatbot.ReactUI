@@ -12,5 +12,7 @@ export interface SongRequest {
     instrument: string,
     requester: string,
     isInDrive: boolean,
-    isInChat: boolean
+    isInChat: boolean,
+    isVip: boolean,
+    isSuperVip: boolean
 }

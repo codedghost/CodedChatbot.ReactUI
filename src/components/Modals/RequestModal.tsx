@@ -1,7 +1,7 @@
 import {BasicModal} from './BasicModal';
 import { Alert, Button, Form, Row, Col} from 'react-bootstrap';
 
-import {RequestOptions} from './RequestOptions';
+import {RequestOptions, _defaultRequestOptions} from './RequestOptions';
 
 export function RequestModal (props: RequestModalProps) {
 
@@ -107,14 +107,7 @@ export function RequestModal (props: RequestModalProps) {
 RequestModal.defaultProps = {
     show: false,
     changeShow: () => {},
-    requestOptions: {
-        songName: "",
-        artistName: "",
-        instrument: "",
-        useVipToken: false,
-        useSuperVipToken: false,
-        errorMessage: ""
-    } as RequestOptions,
+    requestOptions: _defaultRequestOptions,
     updateRequestOptions: (requestOptions: RequestOptions) => {},
     sendRequest: (options: RequestOptions) => {},
     isAddRequest: true
