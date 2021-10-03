@@ -1,6 +1,7 @@
 import TwitchAuthBaseModel from '../../models/TwitchAuthBaseModel';
 import UserPlaylistInfo from '../../models/UserPlaylistInfo';
-import {AxiosGet} from '../UIApiHelperService'
+import { RequestOptions } from '../../components/Modals/RequestModal';
+import {AxiosGet, AxiosPost} from '../UIApiHelperService'
 import {ApiAvailabilityModel, GetLoggedInUserResponse} from './UIApiServiceInterfaces';
 
 
@@ -42,5 +43,16 @@ export function RetrieveUserPlaylistInfo(): Promise<UserPlaylistInfo> {
         })
         .catch(() => {
             return {} as UserPlaylistInfo;
+        });
+}
+
+export function SubmitAddRequest(request: RequestOptions) {
+    return AxiosPost<RequestOptions, string>("Playlist/AddRequest", request)
+        .then((response) => {
+            console.log(response.data as string);
+            return response.data as string
+        })
+        .catch(() => {
+            return "Error";
         });
 }

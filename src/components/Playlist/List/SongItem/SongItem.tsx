@@ -19,13 +19,14 @@ function SongItem(props: SongItemProps) {
     if (props.songRequest === undefined || props.songRequest === null) {
         return (<></>);
     }
-    var isUsersRequest = Equals(props.songRequest?.requester, props.username);
+    var isUsersRequest = Equals(props.songRequest?.requester, props.username) as boolean;
 
-    var editButton = (props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? (
+    console.log(`isUsers: ${isUsersRequest}, songRequester: ${props.songRequest?.requester}, loggedInUser: ${props.username}`);
+    var editButton = (props.isCurrent ? props.isModerator : (isUsersRequest || props.isModerator)) ? (
         <ActionIcon Icon={IconEnums.Types.Edit} Colour={IconEnums.Colours.Yellow} Size={IconEnums.Sizes.Medium} AltText={`Edit ${props.songRequest.songTitle}`} />
     ) : (<></>);
 
-    var deleteButton = (props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? (
+    var deleteButton = (props.isCurrent ? props.isModerator : (isUsersRequest || props.isModerator)) ? (
         <ActionIcon Icon={IconEnums.Types.Remove} Colour={IconEnums.Colours.Red} Size={IconEnums.Sizes.Medium} AltText={`Remove ${props.songRequest.songTitle}`} />
     ) : (<></>);
 

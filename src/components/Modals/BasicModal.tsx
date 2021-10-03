@@ -4,7 +4,7 @@ import { JsxElement } from 'typescript';
 
 export function BasicModal(props: BasicModalProps) {
     return (
-        <Modal show={props.show} onHide={() => {props.changeShow(false)}} size="lg" centered>
+        <Modal show={props.show} onHide={() => {props.changeShow()}} size="lg" centered>
             <Modal.Header closeButton={props.showCloseButton}>
                 <Modal.Title>{props.headerContent}</Modal.Title>
             </Modal.Header>
@@ -16,7 +16,7 @@ export function BasicModal(props: BasicModalProps) {
 
 export interface BasicModalProps {
     show: boolean,
-    changeShow: (showVal: boolean) => void,
+    changeShow: () => void,
     showCloseButton: boolean,
     headerContent: ReactElement,
     bodyContent: ReactElement,
@@ -25,7 +25,7 @@ export interface BasicModalProps {
 
 BasicModal.defaultProps = {
     show: false,
-    changeShow: (show) => {},
+    changeShow: () => {},
     showCloseButton: true,
     headerContent: (<></>),
     bodyContent: (<></>),
