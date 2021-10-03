@@ -80,3 +80,14 @@ export function SubmitRemoveRequest(request: RequestOptions) {
                 return "Error";
             });
 }
+
+export function SubmitMarkInDriveRequest(request: RequestOptions) {
+    return AxiosPost<any, string>("Playlist/MarkInDrive", {songId: request.songRequestId})
+        .then((response) => {
+            console.log(response.data as string);
+            return response.data as string;
+        })
+        .catch(() => {
+            return "Error";
+        });
+}

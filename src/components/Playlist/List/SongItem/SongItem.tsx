@@ -23,6 +23,17 @@ function SongItem(props: SongItemProps) {
     }
     var isUsersRequest = Equals(props.songRequest?.requester, props.username) as boolean;
 
+    var thisRequest = {
+        songRequestId: props.songRequest.songId,
+        songName: props.songRequest.songTitle,
+        artistName: props.songRequest.songArtist,
+        instrument: props.songRequest.instrument,
+        useVipToken: props.songRequest.isVip,
+        useSuperVipToken: props.songRequest.isSuperVip,
+        isCurrent: props.isCurrent,
+        errorMessage: ""
+    } as RequestOptions;
+
     var composeEditRequestOptions = function () {
         props.onEdit({
             songRequestId: props.songRequest.songId,
@@ -49,20 +60,52 @@ function SongItem(props: SongItemProps) {
         } as RequestOptions);
     }
 
+    var composeMarkInDriveRequestOptions = function() {
+        props.onMarkInDrive({
+            songRequestId: props.songRequest.songId,
+            songName: props.songRequest.songTitle,
+            artistName: props.songRequest.songArtist,
+            instrument: props.songRequest.instrument,
+            useVipToken: props.songRequest.isVip,
+            useSuperVipToken: props.songRequest.isSuperVip,
+            isCurrent: props.isCurrent,
+            errorMessage: ""
+        } as RequestOptions);
+    }
+
     console.log(`isUsers: ${isUsersRequest}, songRequester: ${props.songRequest?.requester}, loggedInUser: ${props.username}`);
     var editButton = (props.isCurrent ? props.isModerator : (isUsersRequest || props.isModerator)) ? (
-        <ActionIcon Icon={IconEnums.Types.Edit} Colour={IconEnums.Colours.Yellow} Size={IconEnums.Sizes.Medium} AltText={`Edit ${props.songRequest.songTitle}`} onClick={composeEditRequestOptions} />
+        <ActionIcon 
+            Icon={IconEnums.Types.Edit} 
+            Colour={IconEnums.Colours.Yellow} 
+            Size={IconEnums.Sizes.Medium} 
+            AltText={`Edit ${props.songRequest.songTitle}`} 
+            onClick={composeEditRequestOptions} />
     ) : (<></>);
 
     var deleteButton = (props.isCurrent ? props.isModerator : (isUsersRequest || props.isModerator)) ? (
-        <ActionIcon Icon={IconEnums.Types.Remove} Colour={IconEnums.Colours.Red} Size={IconEnums.Sizes.Medium} AltText={`Remove ${props.songRequest.songTitle}`} onClick={composeRemoveRequestOptions} />
+        <ActionIcon 
+            Icon={IconEnums.Types.Remove} 
+            Colour={IconEnums.Colours.Red} 
+            Size={IconEnums.Sizes.Medium} 
+            AltText={`Remove ${props.songRequest.songTitle}`} 
+            onClick={composeRemoveRequestOptions} />
     ) : (<></>);
 
     var markInDriveButton = 
         props.isModerator ?
             props.songRequest.isInDrive ? 
-                (<ActionIcon Icon={IconEnums.Types.InDrive} Colour={IconEnums.Colours.Green} Size={IconEnums.Sizes.Medium} AltText={`${props.songRequest.songTitle} is already "in the drive"`} />) :
-                (<ActionIcon Icon={IconEnums.Types.NotInDrive} Colour={IconEnums.Colours.Red} Size={IconEnums.Sizes.Medium} AltText={`Mark ${props.songRequest.songTitle} as "in the drive"`} />) 
+                (<ActionIcon 
+                    Icon={IconEnums.Types.InDrive} 
+                    Colour={IconEnums.Colours.Green} 
+                    Size={IconEnums.Sizes.Medium} 
+                    AltText={`${props.songRequest.songTitle} is already "in the drive"`} />) :
+                (<ActionIcon 
+                    Icon={IconEnums.Types.NotInDrive} 
+                    Colour={IconEnums.Colours.Red} 
+                    Size={IconEnums.Sizes.Medium} 
+                    AltText={`Mark ${props.songRequest.songTitle} as "in the drive"`} 
+                    onClick={composeMarkInDriveRequestOptions} />) 
             : (<></>);
 
     var promotableButton = (!props.isCurrent && props.isRegular && (props.isModerator || (isUsersRequest && props.vips > 0))) ?
@@ -123,7 +166,8 @@ SongItem.defaultProps = {
     isCurrent: false,
     isRegular: false,
     onEdit: (request) => {},
-    onRemove: (request) => {}
+    onRemove: (request) => {},
+    onMarkInDrive: (request) => {}
 } as SongItemProps
 
 export interface SongItemProps {
@@ -135,6 +179,7 @@ export interface SongItemProps {
     isRegular: boolean,
     onEdit: (request: RequestOptions) => void;
     onRemove: (request: RequestOptions) => void;
+    onMarkInDrive: (request: RequestOptions) => void;
 }
 
 export default SongItem;

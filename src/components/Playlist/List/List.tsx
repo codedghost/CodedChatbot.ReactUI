@@ -6,15 +6,16 @@ import { GetPlaylist } from '../../../services/PlaylistService/PlaylistService';
 import SongItem from './SongItem/SongItem';
 import PlaylistHeader from './PlaylistHeader/PlaylistHeader';
 import { RequestModal} from '../../../components/Modals/RequestModal';
+import { RemoveRequestModal } from '../../Modals/RemoveRequestModal';
+import { MarkInDriveModal } from '../../Modals/MarkInDriveModal';
 import { RequestOptions, _defaultRequestOptions } from '../../../components/Modals/RequestOptions';
 
 import { IsNullOrWhiteSpace } from '../../../services/StringHelperService';
 
 import './List.scss';
 import UserPlaylistInfo from '../../../models/UserPlaylistInfo';
-import { SubmitEditRequest, SubmitRemoveRequest } from '../../../services/UIApiService/UIApiService';
+import { SubmitEditRequest, SubmitMarkInDriveRequest, SubmitRemoveRequest } from '../../../services/UIApiService/UIApiService';
 import { Equals } from '../../../services/StringComparisonService/StringComparisonService';
-import { RemoveRequestModal } from '../../Modals/RemoveRequestModal';
 
 function List(props: ListProps) {
     const [playlist, updatePlaylist] = useState<PlaylistState>({} as PlaylistState);
@@ -25,6 +26,9 @@ function List(props: ListProps) {
 
     const [showRemoveRequestModal, setShowRemoveRequestModal] = useState(false);
     const [removeRequestOptions, setRemoveRequestOptions] = useState<RequestOptions>(_defaultRequestOptions);
+
+    const [showMarkInDriveModal, setShowMarkInDriveModal] = useState(false);
+    const [markInDriveRequestOptions, setMarkInDriveRequestOptions] = useState<RequestOptions>(_defaultRequestOptions);
 
     useEffect(() => {
         // Get initial Playlist State
@@ -57,7 +61,7 @@ function List(props: ListProps) {
         setPlaylistState(props.UserPlaylistInfo.playlistState);
     }, [props.UserPlaylistInfo.playlistState])
 
-    var closeAndResetEditModal = function () {
+    const closeAndResetEditModal = function () {
         setEditRequestOptions(_defaultRequestOptions);
         setShowEditRequestModal(false);
     }
@@ -80,12 +84,12 @@ function List(props: ListProps) {
         });
     }
 
-    var onEditClick = function(request: RequestOptions) {
+    const onEditClick = function(request: RequestOptions) {
         setEditRequestOptions(request);
         setShowEditRequestModal(true);
     };
 
-    var closeAndResetRemoveModal = function () {
+    const closeAndResetRemoveModal = function () {
         setRemoveRequestOptions(_defaultRequestOptions);
         setShowRemoveRequestModal(false);
     }
@@ -105,17 +109,42 @@ function List(props: ListProps) {
         });
     }
 
-    var onRemoveClick = function(request: RequestOptions) {
+    const onRemoveClick = function(request: RequestOptions) {
         setRemoveRequestOptions(request);
         setShowRemoveRequestModal(true);
     }
 
+    const closeAndResetMarkInDriveModal = function() {
+        setMarkInDriveRequestOptions(_defaultRequestOptions);
+        setShowMarkInDriveModal(false);
+    }
+
+    const handleSendMarkInDriveRequest = function() {
+        SubmitMarkInDriveRequest(markInDriveRequestOptions).then((result) => {
+            console.log(result);
+            if (Equals(result, "success")) {
+                closeAndResetMarkInDriveModal();
+            } else {
+                setMarkInDriveRequestOptions(
+                    {
+                        ...markInDriveRequestOptions,
+                        errorMessage: result
+                    } as RequestOptions);
+            }
+        });
+    }
+
+    const onMarkInDriveClick = function(request: RequestOptions) {
+        setMarkInDriveRequestOptions(request);
+        setShowMarkInDriveModal(true);
+    }
+
     var vipRequestRender = playlist.vipQueue !== undefined ? playlist.vipQueue.map((r) => (
-            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={false} onEdit={onEditClick} onRemove={onRemoveClick} />
+            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={false} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} />
     )) : [];
 
     var regularRequestRender = playlist.regularQueue !== undefined ?  playlist.regularQueue.map((r) => (
-            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={true} onEdit={onEditClick} onRemove={onRemoveClick} />
+            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={true} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} />
     )) : [];
 
     return (
@@ -133,12 +162,17 @@ function List(props: ListProps) {
                     changeShow={closeAndResetRemoveModal}
                     requestOptions={removeRequestOptions}
                     sendRequest={handleSendRemoveRequest} />
+                <MarkInDriveModal
+                    show={showMarkInDriveModal}
+                    changeShow={closeAndResetMarkInDriveModal}
+                    requestOptions={markInDriveRequestOptions}
+                    sendRequest={handleSendMarkInDriveRequest} />
             </div>
             <AnimateSharedLayout>
                 <div className="current">
                     <PlaylistHeader HeaderText={`Current Song (Playlist is ${(IsNullOrWhiteSpace(playlistState) ? "" : playlistState).toUpperCase()})`} />
                     <div className="song-container">
-                        <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} onEdit={onEditClick} onRemove={onRemoveClick} />
+                        <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} />
                     </div>
                 </div>
                 
