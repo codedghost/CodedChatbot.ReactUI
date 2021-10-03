@@ -56,3 +56,14 @@ export function SubmitAddRequest(request: RequestOptions) {
             return "Error";
         });
 }
+
+export function SubmitEditRequest(request: RequestOptions) {
+    return AxiosPost<RequestOptions, string>("Playlist/EditRequest", request)
+        .then((response) => {
+            console.log(response.data as string);
+            return response.data as string;
+        })
+        .catch(() => {
+            return "Error";
+        });
+}

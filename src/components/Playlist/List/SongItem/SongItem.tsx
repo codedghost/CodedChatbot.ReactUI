@@ -1,6 +1,7 @@
 import { SongRequest } from '../../../../services/PlaylistService/PlaylistServiceInterfaces';
 
 import { Equals } from '../../../../services/StringComparisonService/StringComparisonService';
+import {RequestOptions} from '../../../Modals/RequestModal';
 
 import ActionIcon from './ActionIcon';
 
@@ -16,14 +17,27 @@ const spring = {
   };
 
 function SongItem(props: SongItemProps) {
+
     if (props.songRequest === undefined || props.songRequest === null) {
         return (<></>);
     }
     var isUsersRequest = Equals(props.songRequest?.requester, props.username) as boolean;
 
+    var composeEditRequestOptions = function () {
+        props.onEdit({
+            songRequestId: props.songRequest.songId,
+            songName: props.songRequest.songTitle,
+            artistName: props.songRequest.songArtist,
+            instrument: props.songRequest.instrument,
+            useVipToken: false,
+            useSuperVipToken: false,
+            errorMessage: ""
+        } as RequestOptions);
+    }
+
     console.log(`isUsers: ${isUsersRequest}, songRequester: ${props.songRequest?.requester}, loggedInUser: ${props.username}`);
     var editButton = (props.isCurrent ? props.isModerator : (isUsersRequest || props.isModerator)) ? (
-        <ActionIcon Icon={IconEnums.Types.Edit} Colour={IconEnums.Colours.Yellow} Size={IconEnums.Sizes.Medium} AltText={`Edit ${props.songRequest.songTitle}`} />
+        <ActionIcon Icon={IconEnums.Types.Edit} Colour={IconEnums.Colours.Yellow} Size={IconEnums.Sizes.Medium} AltText={`Edit ${props.songRequest.songTitle}`} onClick={composeEditRequestOptions} />
     ) : (<></>);
 
     var deleteButton = (props.isCurrent ? props.isModerator : (isUsersRequest || props.isModerator)) ? (
@@ -93,7 +107,8 @@ SongItem.defaultProps = {
     username: "",
     vips: 0,
     isCurrent: false,
-    isRegular: false
+    isRegular: false,
+    onEdit: (request) => {}
 } as SongItemProps
 
 export interface SongItemProps {
@@ -103,6 +118,7 @@ export interface SongItemProps {
     vips: number,
     isCurrent: boolean,
     isRegular: boolean,
+    onEdit: (request: RequestOptions) => void;
 }
 
 export default SongItem;

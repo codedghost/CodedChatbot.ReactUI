@@ -129,6 +129,7 @@ export interface RequestModalProps {
 }
 
 export interface RequestOptions {
+    songRequestId: number,
     songName: string,
     artistName: string,
     instrument: string,
@@ -136,3 +137,13 @@ export interface RequestOptions {
     useSuperVipToken: boolean,
     errorMessage: string
 }
+
+export const _defaultRequestOptions = {
+    songRequestId: 0,
+    songName: "",
+    artistName: "",
+    instrument: "",
+    useVipToken: false,
+    useSuperVipToken: false,
+    errorMessage: ""
+} as RequestOptions;

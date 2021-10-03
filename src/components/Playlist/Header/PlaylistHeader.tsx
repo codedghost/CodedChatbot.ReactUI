@@ -4,27 +4,18 @@ import { IsNullOrWhiteSpace } from '../../../services/StringHelperService';
 import { SubmitAddRequest } from '../../../services/UIApiService/UIApiService';
 import { useEffect, useState } from 'react';
 
-import {RequestModal, RequestOptions} from '../../Modals/RequestModal';
+import {RequestModal, RequestOptions, _defaultRequestOptions} from '../../Modals/RequestModal';
 
 import PlaylistHeaderProps from './PlaylistHeaderProps';
 import { Button } from 'react-bootstrap';
 import { Equals } from '../../../services/StringComparisonService/StringComparisonService';
 
 function PlaylistHeader(props: PlaylistHeaderProps) {
-    const defaultRequestOptions = {
-        songName: "",
-        artistName: "",
-        instrument: "",
-        useVipToken: false,
-        useSuperVipToken: false,
-        errorMessage: ""
-    } as RequestOptions
-
     const [totalVips, updateTotalVips] = useState<number>(0);
     const [totalBytes, updateTotalBytes] = useState<string>("0");
 
     const [showAddRequestModal, setShowAddRequestModal] = useState(false);
-    const [requestOptions, setRequestOptions] = useState<RequestOptions>(defaultRequestOptions);
+    const [requestOptions, setRequestOptions] = useState<RequestOptions>(_defaultRequestOptions);
 
     useEffect(() => {
         if(props.hubConnection !== undefined) {
@@ -46,7 +37,7 @@ function PlaylistHeader(props: PlaylistHeaderProps) {
     }, [props.UserPlaylistInfo.bytes]);
 
     var closeAndResetModal = function () {
-        setRequestOptions(defaultRequestOptions);
+        setRequestOptions(_defaultRequestOptions);
         setShowAddRequestModal(false);
     }
 
@@ -80,7 +71,6 @@ function PlaylistHeader(props: PlaylistHeaderProps) {
                     } as RequestOptions);
             }
         });
-        
     }
     
     console.log("username:" + props.username);
