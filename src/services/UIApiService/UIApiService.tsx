@@ -69,12 +69,14 @@ export function SubmitEditRequest(request: RequestOptions) {
 }
 
 export function SubmitRemoveRequest(request: RequestOptions) {
-    return AxiosPost<any, string>("Playlist/RemoveRequest", {songId: request.songRequestId})
-        .then((response) => {
-            console.log(response.data as string);
-            return response.data as string;
-        })
-        .catch(() => {
-            return "Error";
-        });
+    return (request.isCurrent 
+        ? AxiosPost<any, string>("Playlist/RemoveCurrent", {songId: request.songRequestId}) 
+        : AxiosPost<any, string>("Playlist/RemoveRequest", {songId: request.songRequestId}))
+            .then((response) => {
+                console.log(response.data as string);
+                return response.data as string;
+            })
+            .catch(() => {
+                return "Error";
+            });
 }

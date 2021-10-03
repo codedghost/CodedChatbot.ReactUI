@@ -5,6 +5,7 @@ export interface RequestOptions {
     instrument: string,
     useVipToken: boolean,
     useSuperVipToken: boolean,
+    isCurrent: false,
     errorMessage: string
 }
 
@@ -15,5 +16,6 @@ export const _defaultRequestOptions = {
     instrument: "",
     useVipToken: false,
     useSuperVipToken: false,
+    isCurrent: false,
     errorMessage: ""
 } as RequestOptions;

@@ -31,6 +31,7 @@ function SongItem(props: SongItemProps) {
             instrument: props.songRequest.instrument,
             useVipToken: false,
             useSuperVipToken: false,
+            isCurrent: props.isCurrent,
             errorMessage: ""
         } as RequestOptions);
     }
@@ -43,6 +44,7 @@ function SongItem(props: SongItemProps) {
             instrument: props.songRequest.instrument,
             useVipToken: props.songRequest.isVip,
             useSuperVipToken: props.songRequest.isSuperVip,
+            isCurrent: props.isCurrent,
             errorMessage: ""
         } as RequestOptions);
     }
