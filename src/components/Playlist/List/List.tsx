@@ -8,13 +8,14 @@ import PlaylistHeader from './PlaylistHeader/PlaylistHeader';
 import { RequestModal} from '../../../components/Modals/RequestModal';
 import { RemoveRequestModal } from '../../Modals/RemoveRequestModal';
 import { MarkInDriveModal } from '../../Modals/MarkInDriveModal';
+import { PromoteRequestModal } from '../../Modals/PromoteRequestModal';
 import { RequestOptions, _defaultRequestOptions } from '../../../components/Modals/RequestOptions';
 
 import { IsNullOrWhiteSpace } from '../../../services/StringHelperService';
 
 import './List.scss';
 import UserPlaylistInfo from '../../../models/UserPlaylistInfo';
-import { SubmitEditRequest, SubmitMarkInDriveRequest, SubmitRemoveRequest } from '../../../services/UIApiService/UIApiService';
+import { SubmitEditRequest, SubmitMarkInDriveRequest, SubmitRemoveRequest, SubmitPromoteRequest } from '../../../services/UIApiService/UIApiService';
 import { Equals } from '../../../services/StringComparisonService/StringComparisonService';
 
 function List(props: ListProps) {
@@ -29,6 +30,9 @@ function List(props: ListProps) {
 
     const [showMarkInDriveModal, setShowMarkInDriveModal] = useState(false);
     const [markInDriveRequestOptions, setMarkInDriveRequestOptions] = useState<RequestOptions>(_defaultRequestOptions);
+
+    const [showPromoteRequestModal, setShowPromoteRequestModal] = useState(false);
+    const [promoteRequestOptions, setPromoteRequestOptions] = useState<RequestOptions>(_defaultRequestOptions);
 
     useEffect(() => {
         // Get initial Playlist State
@@ -139,12 +143,37 @@ function List(props: ListProps) {
         setShowMarkInDriveModal(true);
     }
 
+    const closeAndResetPromoteRequestModal = function() {
+        setPromoteRequestOptions(_defaultRequestOptions);
+        setShowPromoteRequestModal(false);
+    }
+
+    const handleSendPromoteRequestModal = function() {
+        SubmitPromoteRequest(promoteRequestOptions).then((result) => {
+            console.log(result);
+            if (Equals(result, "success")) {
+                closeAndResetPromoteRequestModal();
+            } else {
+                setPromoteRequestOptions(
+                    {
+                        ...promoteRequestOptions,
+                        errorMessage: result
+                    } as RequestOptions);
+            }
+        });
+    }
+
+    const onPromoteRequestClick = function(request: RequestOptions) {
+        setPromoteRequestOptions(request);
+        setShowPromoteRequestModal(true);
+    }
+
     var vipRequestRender = playlist.vipQueue !== undefined ? playlist.vipQueue.map((r) => (
             <SongItem songRequest={r} {...props} isCurrent={false} isRegular={false} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} />
     )) : [];
 
     var regularRequestRender = playlist.regularQueue !== undefined ?  playlist.regularQueue.map((r) => (
-            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={true} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} />
+            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={true} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} onPromote={onPromoteRequestClick} />
     )) : [];
 
     return (
@@ -167,6 +196,12 @@ function List(props: ListProps) {
                     changeShow={closeAndResetMarkInDriveModal}
                     requestOptions={markInDriveRequestOptions}
                     sendRequest={handleSendMarkInDriveRequest} />
+                <PromoteRequestModal
+                    show={showPromoteRequestModal}
+                    changeShow={closeAndResetPromoteRequestModal}
+                    requestOptions={promoteRequestOptions}
+                    updateRequestOptions={setPromoteRequestOptions}
+                    sendRequest={handleSendPromoteRequestModal} />
             </div>
             <AnimateSharedLayout>
                 <div className="current">

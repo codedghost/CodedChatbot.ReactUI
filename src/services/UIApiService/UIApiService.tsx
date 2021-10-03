@@ -91,3 +91,14 @@ export function SubmitMarkInDriveRequest(request: RequestOptions) {
             return "Error";
         });
 }
+
+export function SubmitPromoteRequest(request: RequestOptions) {
+    return AxiosPost<any, string>("Playlist/PromoteRequest", {songId: request.songRequestId, useVip: request.useVipToken, useSuperVip: request.useSuperVipToken})
+        .then((response) => {
+            console.log(response.data as string);
+            return response.data as string;
+        })
+        .catch(() => {
+            return "Error";
+        });
+}
