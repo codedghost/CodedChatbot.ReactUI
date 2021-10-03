@@ -1,6 +1,7 @@
 import {BasicModal} from './BasicModal';
 import { Alert, Button, Form, Row, Col} from 'react-bootstrap';
-import { Equals } from '../../services/StringComparisonService/StringComparisonService';
+
+import {RequestOptions} from './RequestOptions';
 
 export function RequestModal (props: RequestModalProps) {
 
@@ -127,23 +128,3 @@ export interface RequestModalProps {
     sendRequest: () => void,
     isAddRequest: boolean
 }
-
-export interface RequestOptions {
-    songRequestId: number,
-    songName: string,
-    artistName: string,
-    instrument: string,
-    useVipToken: boolean,
-    useSuperVipToken: boolean,
-    errorMessage: string
-}
-
-export const _defaultRequestOptions = {
-    songRequestId: 0,
-    songName: "",
-    artistName: "",
-    instrument: "",
-    useVipToken: false,
-    useSuperVipToken: false,
-    errorMessage: ""
-} as RequestOptions;

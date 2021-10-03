@@ -1,7 +1,7 @@
 import { SongRequest } from '../../../../services/PlaylistService/PlaylistServiceInterfaces';
 
 import { Equals } from '../../../../services/StringComparisonService/StringComparisonService';
-import {RequestOptions} from '../../../Modals/RequestModal';
+import {RequestOptions} from '../../../Modals/RequestOptions';
 
 import ActionIcon from './ActionIcon';
 

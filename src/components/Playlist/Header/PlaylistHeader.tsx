@@ -4,7 +4,8 @@ import { IsNullOrWhiteSpace } from '../../../services/StringHelperService';
 import { SubmitAddRequest } from '../../../services/UIApiService/UIApiService';
 import { useEffect, useState } from 'react';
 
-import {RequestModal, RequestOptions, _defaultRequestOptions} from '../../Modals/RequestModal';
+import {RequestModal} from '../../Modals/RequestModal';
+import { RequestOptions, _defaultRequestOptions } from '../../../components/Modals/RequestOptions';
 
 import PlaylistHeaderProps from './PlaylistHeaderProps';
 import { Button } from 'react-bootstrap';

@@ -1,6 +1,6 @@
 import TwitchAuthBaseModel from '../../models/TwitchAuthBaseModel';
 import UserPlaylistInfo from '../../models/UserPlaylistInfo';
-import { RequestOptions } from '../../components/Modals/RequestModal';
+import { RequestOptions } from '../../components/Modals/RequestOptions';
 import {AxiosGet, AxiosPost} from '../UIApiHelperService'
 import {ApiAvailabilityModel, GetLoggedInUserResponse} from './UIApiServiceInterfaces';
 

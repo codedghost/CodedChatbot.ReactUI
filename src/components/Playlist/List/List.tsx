@@ -5,7 +5,8 @@ import { PlaylistState } from '../../../services/PlaylistService/PlaylistService
 import { GetPlaylist } from '../../../services/PlaylistService/PlaylistService';
 import SongItem from './SongItem/SongItem';
 import PlaylistHeader from './PlaylistHeader/PlaylistHeader';
-import { RequestModal, RequestOptions, _defaultRequestOptions } from '../../../components/Modals/RequestModal';
+import { RequestModal} from '../../../components/Modals/RequestModal';
+import { RequestOptions, _defaultRequestOptions } from '../../../components/Modals/RequestOptions';
 
 import { IsNullOrWhiteSpace } from '../../../services/StringHelperService';
 
