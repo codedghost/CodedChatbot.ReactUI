@@ -205,7 +205,7 @@ function List(props: ListProps) {
             </div>
             <AnimateSharedLayout>
                 <div className="current">
-                    <PlaylistHeader HeaderText={`Current Song (Playlist is ${(IsNullOrWhiteSpace(playlistState) ? "" : playlistState).toUpperCase()})`} />
+                    <PlaylistHeader HeaderText={`Current Song (${playlist.currentSong.isVip ? "VIP" : playlist.currentSong.isSuperVip ? "SuperVIP" : "Regular"}) (Playlist is ${(IsNullOrWhiteSpace(playlistState) ? "" : playlistState).toUpperCase()})`} />
                     <div className="song-container">
                         <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} />
                     </div>
@@ -226,7 +226,6 @@ function List(props: ListProps) {
                     </div>
                 </div>
             </AnimateSharedLayout>
-            <pre >{JSON.stringify(playlist, null, 2)}</pre>
         </div>
     )
 }
