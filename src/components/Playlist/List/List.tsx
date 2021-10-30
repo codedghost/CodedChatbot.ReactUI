@@ -169,11 +169,11 @@ function List(props: ListProps) {
     }
 
     var vipRequestRender = playlist.vipQueue !== undefined ? playlist.vipQueue.map((r) => (
-            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={false} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} />
+            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={false} isVip={true} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} onPromote={onPromoteRequestClick} />
     )) : [];
 
     var regularRequestRender = playlist.regularQueue !== undefined ?  playlist.regularQueue.map((r) => (
-            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={true} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} onPromote={onPromoteRequestClick} />
+            <SongItem songRequest={r} {...props} isCurrent={false} isRegular={true} isVip={false} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} onPromote={onPromoteRequestClick} />
     )) : [];
 
     return (
@@ -205,9 +205,9 @@ function List(props: ListProps) {
             </div>
             <AnimateSharedLayout>
                 <div className="current">
-                    <PlaylistHeader HeaderText={`Current Song (${playlist.currentSong.isVip ? "VIP" : playlist.currentSong.isSuperVip ? "SuperVIP" : "Regular"}) (Playlist is ${(IsNullOrWhiteSpace(playlistState) ? "" : playlistState).toUpperCase()})`} />
+                    <PlaylistHeader HeaderText={`Current Song (Playlist is ${(IsNullOrWhiteSpace(playlistState) ? "" : playlistState).toUpperCase()})`} />
                     <div className="song-container">
-                        <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} />
+                        <SongItem songRequest={playlist.currentSong} {...props} isCurrent={true} isRegular={false} isVip={false} onEdit={onEditClick} onRemove={onRemoveClick} onMarkInDrive={onMarkInDriveClick} />
                     </div>
                 </div>
                 

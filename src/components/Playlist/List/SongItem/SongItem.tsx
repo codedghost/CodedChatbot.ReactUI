@@ -23,17 +23,6 @@ function SongItem(props: SongItemProps) {
     }
     var isUsersRequest = Equals(props.songRequest?.requester, props.username) as boolean;
 
-    var thisRequest = {
-        songRequestId: props.songRequest.songId,
-        songName: props.songRequest.songTitle,
-        artistName: props.songRequest.songArtist,
-        instrument: props.songRequest.instrument,
-        useVipToken: props.songRequest.isVip,
-        useSuperVipToken: props.songRequest.isSuperVip,
-        isCurrent: props.isCurrent,
-        errorMessage: ""
-    } as RequestOptions;
-
     var composeEditRequestOptions = function () {
         props.onEdit({
             songRequestId: props.songRequest.songId,
@@ -121,7 +110,7 @@ function SongItem(props: SongItemProps) {
                     onClick={composeMarkInDriveRequestOptions} />) 
             : (<></>);
 
-    var promotableButton = (!props.isCurrent && props.isRegular && (props.isModerator || (isUsersRequest && props.vips > 0))) ?
+    var promotableButton = (!props.isCurrent && (props.isRegular || props.isVip) && (props.isModerator || (isUsersRequest && props.isRegular && props.vips > 0) || (isUsersRequest && props.isVip && props.vips > 50))) ?
         (<ActionIcon Icon={IconEnums.Types.Promote} Colour={IconEnums.Colours.Yellow} Size={IconEnums.Sizes.Medium} AltText={`Promote ${props.songRequest.songTitle} to VIP queue`} onClick={composePromoteRequestOptions} />) :
         (<></>);
 
@@ -191,6 +180,7 @@ export interface SongItemProps {
     vips: number,
     isCurrent: boolean,
     isRegular: boolean,
+    isVip: boolean,
     onEdit: (request: RequestOptions) => void;
     onRemove: (request: RequestOptions) => void;
     onMarkInDrive: (request: RequestOptions) => void;

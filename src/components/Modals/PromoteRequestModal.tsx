@@ -36,11 +36,11 @@ export function PromoteRequestModal(props: PromoteRequestModalProps) {
                 <Form.Label column xs="6">{props.requestOptions.artistName}</Form.Label>
                 <Form.Label column xs="4">Instrument:</Form.Label>
                 <Form.Label column xs="6">{props.requestOptions.instrument}</Form.Label>
-                {/* <Form.Label column xs="4">Use a VIP or Super VIP?</Form.Label>
+                <Form.Label column xs="4">Use a VIP or Super VIP?</Form.Label>
                 <Col xs="12">
                         <Form.Check inline label="Use VIP?" name="vip-radio" type="radio" id="vip-radio" defaultChecked={true} onChange={handleVipUpdateVip} />
                         <Form.Check inline label="Use Super VIP? (50 VIPs)" name="vip-radio" type="radio" id="super-vip-radio" onChange={handleVipUpdateSuperVip} />
-                </Col> */}
+                </Col>
             </Form.Group>
         </>
     );
