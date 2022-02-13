@@ -52,7 +52,8 @@ function List(props: ListProps) {
             props.hubConnection.on("PlaylistState", (newState) => {
                 console.log(newState);
                 var castNewState = newState as string;
-                setPlaylistState(castNewState)
+                setPlaylistState(castNewState);
+                props.UserPlaylistInfo.playlistState = newState as string;
             });
 
             props.hubConnection.on("Heartbeat", () => {

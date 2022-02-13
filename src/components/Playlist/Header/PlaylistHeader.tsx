@@ -1,22 +1,31 @@
-import {Alert, Modal} from 'react-bootstrap';
+import {Alert, Row} from 'react-bootstrap';
 import UserPlaylistInfo from '../../../models/UserPlaylistInfo';
 import { IsNullOrWhiteSpace } from '../../../services/StringHelperService';
-import { SubmitAddRequest } from '../../../services/UIApiService/UIApiService';
+import { SubmitAddRequest, SubmitChangePlaylistStateRequest, SubmitEmptyPlaylist } from '../../../services/UIApiService/UIApiService';
 import { useEffect, useState } from 'react';
 
 import {RequestModal} from '../../Modals/RequestModal';
 import { RequestOptions, _defaultRequestOptions } from '../../../components/Modals/RequestOptions';
+import { ChangePlaylistStateModal } from '../../Modals/ChangePlaylistStateModal';
+import { SendEmptyPlaylistModal } from '../../Modals/SendEmptyPlaylistModal';
 
 import PlaylistHeaderProps from './PlaylistHeaderProps';
 import { Button } from 'react-bootstrap';
 import { Equals } from '../../../services/StringComparisonService/StringComparisonService';
 
+
 function PlaylistHeader(props: PlaylistHeaderProps) {
     const [totalVips, updateTotalVips] = useState<number>(0);
     const [totalBytes, updateTotalBytes] = useState<string>("0");
 
-    const [showAddRequestModal, setShowAddRequestModal] = useState(false);
+    const [showAddRequestModal, setShowAddRequestModal] = useState<boolean>(false);
     const [requestOptions, setRequestOptions] = useState<RequestOptions>(_defaultRequestOptions);
+
+    const [showChangePlaylistStateModal, setShowChangePlaylistStateModal] = useState<boolean>(false);
+    const [changePlaylistStateModalErrorMessage, setChangePlaylistStateErrorMessage] = useState<string>("");
+
+    const [showEmptyPlaylistModal, setShowEmptyPlaylistModal] = useState<boolean>(false);
+    const [sendEmptyPlaylistModalErrorMessage, setSendEmptyPlaylistModalErrorMessage] = useState<string>("");
 
     useEffect(() => {
         if(props.hubConnection !== undefined) {
@@ -42,6 +51,16 @@ function PlaylistHeader(props: PlaylistHeaderProps) {
         setShowAddRequestModal(false);
     }
 
+    var closeChangePlaylistStateModal = function () {
+        setShowChangePlaylistStateModal(false);
+        setChangePlaylistStateErrorMessage("");
+    }
+
+    var closeSendEmptyPlaylistModal = function () {
+        setShowEmptyPlaylistModal(false);
+        setSendEmptyPlaylistModalErrorMessage("")
+    }
+
     const loggedOutContent = (
         <div>
             <Alert.Link href={props.LoginUrl}>Login</Alert.Link> with Twitch to access playlist features!
@@ -49,10 +68,16 @@ function PlaylistHeader(props: PlaylistHeaderProps) {
     );
 
     const loggedInContent = (
-        <div className="d-flex justify-content-between align-items-center">
-            <div>Welcome {props.username}! {props.isModerator ? "You are a moderator, gg!" : ""} You have {totalVips} VIP tokens and {totalBytes} Bytes!</div>
-            <div><Button variant="success" onClick={() => {setShowAddRequestModal(true)}}>Request a song</Button></div>
-        </div>
+        <>
+            <div className="d-flex justify-content-between align-items-center">
+                <div>Welcome {props.username}! {props.isModerator ? "You are a moderator, gg!" : ""} You have {totalVips} VIP tokens and {totalBytes} Bytes!</div>
+                <div><Button variant="success" onClick={() => {setShowAddRequestModal(true)}}>Request a song</Button></div>
+            </div>
+            <div className="d-flex gap-1">
+                <div><Button variant="success" onClick={() => {setShowChangePlaylistStateModal(true)}}>Change Playlist State</Button></div>
+                <div><Button variant="success" onClick={() => {setShowEmptyPlaylistModal(true)}}>Empty Playlist</Button></div>
+            </div>
+        </>
     )
 
     const handleSendRequest = function() {
@@ -73,8 +98,34 @@ function PlaylistHeader(props: PlaylistHeaderProps) {
             }
         });
     }
+
+    const handleSendChangePlaylistState = function (state: string) {
+        SubmitChangePlaylistStateRequest(state).then((result: string) => {
+            console.log(result);
+
+            if (Equals(result, "success")) {
+                closeChangePlaylistStateModal();
+            } else {
+                setChangePlaylistStateErrorMessage(result);
+            }
+        })
+        
+        console.log(`Will send change playlist state with ${state}`);
+        closeChangePlaylistStateModal();
+    }
+
+    const handleSendEmptyPlaylist = function () {
+        SubmitEmptyPlaylist().then((result: string) => {
+            console.log(result);
+
+            if (Equals(result, "success")) {
+                closeSendEmptyPlaylistModal();
+            } else {
+                setSendEmptyPlaylistModalErrorMessage(result);
+            }
+        })
+    }
     
-    console.log("username:" + props.username);
     return (
         <>
             <RequestModal 
@@ -84,6 +135,18 @@ function PlaylistHeader(props: PlaylistHeaderProps) {
                 requestOptions={requestOptions} 
                 updateRequestOptions={setRequestOptions} 
                 sendRequest={handleSendRequest} />
+            <ChangePlaylistStateModal 
+                show={showChangePlaylistStateModal}
+                changeShow={closeChangePlaylistStateModal}
+                updatePlaylistState={handleSendChangePlaylistState}
+                currentState={props.UserPlaylistInfo.playlistState} 
+                errorMessage={changePlaylistStateModalErrorMessage} />
+            <SendEmptyPlaylistModal 
+                show={showEmptyPlaylistModal}
+                changeShow={closeSendEmptyPlaylistModal}
+                sendEmpty={handleSendEmptyPlaylist}
+                errorMessage={sendEmptyPlaylistModalErrorMessage} />
+
             <Alert key="playlist-header" variant="dark">
                 {IsNullOrWhiteSpace(props?.username) === true ? loggedOutContent : loggedInContent}
             </Alert>

@@ -102,3 +102,25 @@ export function SubmitPromoteRequest(request: RequestOptions) {
             return "Error";
         });
 }
+
+export function SubmitChangePlaylistStateRequest(state: string) {
+    return AxiosPost<any, string>("Playlist/SetPlaylistState", {playlistState: state})
+        .then((response) => {
+            console.log(response.data as string);
+            return response.data as string;
+        })
+        .catch(() => {
+            return "Error";
+        });
+}
+
+export function SubmitEmptyPlaylist() {
+    return AxiosPost<any, string>("Playlist/EmptyPlaylist", {})
+        .then((response) => {
+            console.log(response.data as string);
+            return response.data as string;
+        })
+        .catch(() => {
+            return "Error";
+        });
+}
