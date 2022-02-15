@@ -11,3 +11,13 @@ export const _defaultSongSearchProps = {
     songName: "",
     artistName: ""
 } as SongSearchProps;
+
+export interface SongSearchResult {
+    songId: number;
+    songName: string;
+    charterUsername: string;
+    songArtist: string;
+    isOfficial: boolean;
+    isDownloaded: boolean;
+    isLinkDead: boolean;
+}

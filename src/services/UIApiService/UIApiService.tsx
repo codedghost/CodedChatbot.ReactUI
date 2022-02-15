@@ -3,6 +3,7 @@ import UserPlaylistInfo from "../../models/UserPlaylistInfo";
 import { RequestOptions } from "../../components/Modals/RequestOptions";
 import { AxiosGet, AxiosPost } from "../UIApiHelperService";
 import { ApiAvailabilityModel, GetLoggedInUserResponse } from "./UIApiServiceInterfaces";
+import { SongSearchProps, SongSearchResult } from "../../pages/Moderation/Search/SearchProps";
 
 export function CheckApiAvailability(): Promise<boolean> {
     return AxiosGet<ApiAvailabilityModel>("Status")
@@ -130,4 +131,11 @@ export function SubmitEmptyPlaylist() {
         .catch(() => {
             return "Error";
         });
+}
+
+export function ModerationSongSearch(songSearchProps: SongSearchProps) {
+    return AxiosPost<any, SongSearchResult[]>("Moderation/SongSearch", songSearchProps).then((response) => {
+        console.log(response.data as SongSearchResult[]);
+        return response.data as SongSearchResult[];
+    });
 }
