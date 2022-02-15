@@ -9,6 +9,7 @@ import NavBar from "./components/Navbar/NavBar";
 import Home from "./pages/Home/Home";
 import Info from "./pages/Stream/Info/Info";
 import Playlist from "./pages/Stream/Playlist/Playlist";
+import ModerationSearch from "./pages/Moderation/Search/Search";
 
 import GetUserPlaylistInfo from "./components/GetUserPlaylistInfo/GetUserPlaylistInfo";
 
@@ -40,6 +41,10 @@ function App() {
                                 <Playlist LoginUrl={loginUrl} UserPlaylistInfo={userPlaylistInfo} {...authBaseModel} />
                             </>
                         }
+                    />
+                    <Route
+                        path="/moderation/search"
+                        element={authBaseModel?.isModerator ? <ModerationSearch {...authBaseModel} /> : <></>}
                     />
                 </Routes>
             </BrowserRouter>

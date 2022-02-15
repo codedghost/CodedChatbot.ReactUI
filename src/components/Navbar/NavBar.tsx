@@ -48,7 +48,7 @@ function NavBar(props: NavBarProps) {
 
     var test = "";
 
-    var moderatorNavItem = props.AuthBaseModel.isModerator ? (
+    var moderatorNavItem = props?.AuthBaseModel?.isModerator ? (
         <NavDropdown
             title="Moderation"
             id="moderation-dropdown"
