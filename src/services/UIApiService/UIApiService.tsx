@@ -1,17 +1,18 @@
-import TwitchAuthBaseModel from '../../models/TwitchAuthBaseModel';
-import UserPlaylistInfo from '../../models/UserPlaylistInfo';
-import { RequestOptions } from '../../components/Modals/RequestOptions';
-import {AxiosGet, AxiosPost} from '../UIApiHelperService'
-import {ApiAvailabilityModel, GetLoggedInUserResponse} from './UIApiServiceInterfaces';
-
+import TwitchAuthBaseModel from "../../models/TwitchAuthBaseModel";
+import UserPlaylistInfo from "../../models/UserPlaylistInfo";
+import { RequestOptions } from "../../components/Modals/RequestOptions";
+import { AxiosGet, AxiosPost } from "../UIApiHelperService";
+import { ApiAvailabilityModel, GetLoggedInUserResponse } from "./UIApiServiceInterfaces";
 
 export function CheckApiAvailability(): Promise<boolean> {
-    return AxiosGet<ApiAvailabilityModel>("Status").then((request) => {
-        return true;
-    }).catch((error) => {
-        console.log(error)
-        return false;
-    })
+    return AxiosGet<ApiAvailabilityModel>("Status")
+        .then((request) => {
+            return true;
+        })
+        .catch((error) => {
+            console.log(error);
+            return false;
+        });
 }
 
 export function GetUsername(): Promise<string> {
@@ -27,7 +28,7 @@ export function GetUsername(): Promise<string> {
 export function GetAuthBaseModel(): Promise<TwitchAuthBaseModel> {
     return AxiosGet<TwitchAuthBaseModel>("Moderation/GetAuthBaseModel")
         .then((response) => {
-            console.log(response.data as TwitchAuthBaseModel)
+            console.log(response.data as TwitchAuthBaseModel);
             return response.data as TwitchAuthBaseModel;
         })
         .catch(() => {
@@ -50,7 +51,7 @@ export function SubmitAddRequest(request: RequestOptions) {
     return AxiosPost<RequestOptions, string>("Playlist/AddRequest", request)
         .then((response) => {
             console.log(response.data as string);
-            return response.data as string
+            return response.data as string;
         })
         .catch(() => {
             return "Error";
@@ -69,20 +70,22 @@ export function SubmitEditRequest(request: RequestOptions) {
 }
 
 export function SubmitRemoveRequest(request: RequestOptions) {
-    return (request.isCurrent 
-        ? AxiosPost<any, string>("Playlist/RemoveCurrent", {songId: request.songRequestId}) 
-        : AxiosPost<any, string>("Playlist/RemoveRequest", {songId: request.songRequestId}))
-            .then((response) => {
-                console.log(response.data as string);
-                return response.data as string;
-            })
-            .catch(() => {
-                return "Error";
-            });
+    return (
+        request.isCurrent
+            ? AxiosPost<any, string>("Playlist/RemoveCurrent", { songId: request.songRequestId })
+            : AxiosPost<any, string>("Playlist/RemoveRequest", { songId: request.songRequestId })
+    )
+        .then((response) => {
+            console.log(response.data as string);
+            return response.data as string;
+        })
+        .catch(() => {
+            return "Error";
+        });
 }
 
 export function SubmitMarkInDriveRequest(request: RequestOptions) {
-    return AxiosPost<any, string>("Playlist/MarkInDrive", {songId: request.songRequestId})
+    return AxiosPost<any, string>("Playlist/MarkInDrive", { songId: request.songRequestId })
         .then((response) => {
             console.log(response.data as string);
             return response.data as string;
@@ -93,7 +96,11 @@ export function SubmitMarkInDriveRequest(request: RequestOptions) {
 }
 
 export function SubmitPromoteRequest(request: RequestOptions) {
-    return AxiosPost<any, string>("Playlist/PromoteRequest", {songId: request.songRequestId, useVip: request.useVipToken, useSuperVip: request.useSuperVipToken})
+    return AxiosPost<any, string>("Playlist/PromoteRequest", {
+        songId: request.songRequestId,
+        useVip: request.useVipToken,
+        useSuperVip: request.useSuperVipToken
+    })
         .then((response) => {
             console.log(response.data as string);
             return response.data as string;
@@ -104,7 +111,7 @@ export function SubmitPromoteRequest(request: RequestOptions) {
 }
 
 export function SubmitChangePlaylistStateRequest(state: string) {
-    return AxiosPost<any, string>("Playlist/SetPlaylistState", {playlistState: state})
+    return AxiosPost<any, string>("Playlist/SetPlaylistState", { playlistState: state })
         .then((response) => {
             console.log(response.data as string);
             return response.data as string;

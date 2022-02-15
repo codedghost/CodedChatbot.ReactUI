@@ -1,5 +1,4 @@
-
 export default interface PlaylistHeaderProps {
-    HeaderText: string,
-    FullWidth: boolean
+    HeaderText: string;
+    FullWidth: boolean;
 }

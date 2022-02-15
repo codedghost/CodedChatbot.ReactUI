@@ -1,15 +1,14 @@
-import { useEffect } from 'react';
-import TwitchEmbedProps from './TwitchEmbedProps';
+import { useEffect } from "react";
+import TwitchEmbedProps from "./TwitchEmbedProps";
 
 function TwitchEmbed(props: TwitchEmbedProps) {
     const embedUrl = "https://embed.twitch.tv/embed/v1.js";
-    
+
     useEffect(() => {
+        const script = document.createElement("script");
+        script.setAttribute("src", embedUrl);
 
-        const script = document.createElement('script');
-        script.setAttribute('src', embedUrl);
-
-        script.addEventListener('load', () => {
+        script.addEventListener("load", () => {
             new (window as any).Twitch.Embed(props.targetId, {
                 height: props.height,
                 width: props.width,
@@ -22,19 +21,16 @@ function TwitchEmbed(props: TwitchEmbedProps) {
 
         document.body.appendChild(script);
         // eslin-disable-next-line
-    }, [props.targetId, props.height, props.width, props.channel])
+    }, [props.targetId, props.height, props.width, props.channel]);
 
-    return (
-        <div id={props.targetId}>
-        </div>
-    )
+    return <div id={props.targetId}></div>;
 }
 
 TwitchEmbed.defaultProps = {
-    targetId: 'twitch-embed',
-    width: '940',
-    height: '480',
+    targetId: "twitch-embed",
+    width: "940",
+    height: "480",
     channel: ""
-} as TwitchEmbedProps
+} as TwitchEmbedProps;
 
 export default TwitchEmbed;

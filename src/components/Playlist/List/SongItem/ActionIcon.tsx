@@ -6,9 +6,7 @@ function ActionIcon(props: ActionIconProps) {
         fontSize: props.Size
     };
 
-    return (
-        <i className={props.Icon} style={styling} aria-label={props.AltText} onClick={props.onClick} />
-    );
+    return <i className={props.Icon} style={styling} aria-label={props.AltText} onClick={props.onClick} />;
 }
 
 ActionIcon.defaultProps = {
@@ -17,14 +15,14 @@ ActionIcon.defaultProps = {
     Size: "",
     AltText: "",
     onClick: () => {}
-} as ActionIconProps
+} as ActionIconProps;
 
 export interface ActionIconProps {
-    Icon: string,
-    Colour: string,
-    Size: string,
-    AltText: string,
-    onClick: () => void
+    Icon: string;
+    Colour: string;
+    Size: string;
+    AltText: string;
+    onClick: () => void;
 }
 
 export default ActionIcon;

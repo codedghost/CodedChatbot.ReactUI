@@ -1,10 +1,9 @@
-import {AxiosGet} from '../UIApiHelperService';
-import {PlaylistState} from './PlaylistServiceInterfaces';
-
+import { AxiosGet } from "../UIApiHelperService";
+import { PlaylistState } from "./PlaylistServiceInterfaces";
 
 export function GetPlaylist(): Promise<PlaylistState> {
-    console.log("Get Playlist")
-    return AxiosGet<PlaylistState>('Playlist/GetPlaylist')
+    console.log("Get Playlist");
+    return AxiosGet<PlaylistState>("Playlist/GetPlaylist")
         .then((response) => {
             return response.data as PlaylistState;
         })

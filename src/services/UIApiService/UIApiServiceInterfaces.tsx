@@ -1,8 +1,7 @@
-
 export interface ApiAvailabilityModel {
-    isAvailable: boolean
+    isAvailable: boolean;
 }
 
 export interface GetLoggedInUserResponse {
-    username: string
+    username: string;
 }

@@ -1,12 +1,12 @@
 export interface RequestOptions {
-    songRequestId: number,
-    songName: string,
-    artistName: string,
-    instrument: string,
-    useVipToken: boolean,
-    useSuperVipToken: boolean,
-    isCurrent: false,
-    errorMessage: string
+    songRequestId: number;
+    songName: string;
+    artistName: string;
+    instrument: string;
+    useVipToken: boolean;
+    useSuperVipToken: boolean;
+    isCurrent: false;
+    errorMessage: string;
 }
 
 export const _defaultRequestOptions = {
