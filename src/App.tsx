@@ -1,6 +1,6 @@
 import "./App.scss";
 import { useState } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -29,16 +29,19 @@ function App() {
                     SetLoginUrlCallback={setLoginUrl}
                     SetAuthModelCallback={setAuthBaseModel}
                 />
-                <Route exact path="/">
-                    <Home />
-                </Route>
-                <Route exact path="/stream/info">
-                    <Info />
-                </Route>
-                <Route exact path="/stream/playlist">
-                    <GetUserPlaylistInfo SetUserPlaylistInfoCallback={setUserPlaylistInfo} />
-                    <Playlist LoginUrl={loginUrl} UserPlaylistInfo={userPlaylistInfo} {...authBaseModel} />
-                </Route>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/stream/info" element={<Info />} />
+                    <Route
+                        path="/stream/playlist"
+                        element={
+                            <>
+                                <GetUserPlaylistInfo SetUserPlaylistInfoCallback={setUserPlaylistInfo} />
+                                <Playlist LoginUrl={loginUrl} UserPlaylistInfo={userPlaylistInfo} {...authBaseModel} />
+                            </>
+                        }
+                    />
+                </Routes>
             </BrowserRouter>
         </div>
     );

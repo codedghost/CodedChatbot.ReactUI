@@ -4,7 +4,7 @@ import { CheckApiAvailability, GetAuthBaseModel } from "../../services/UIApiServ
 import TwitchAuthBaseModel from "../../models/TwitchAuthBaseModel";
 
 import { useEffect, useState } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import NavBarProps from "./NavBarProps";
 
@@ -22,7 +22,7 @@ function NavBar(props: NavBarProps) {
     const [showModerationDropdown, setModerationDropdown] = useState<boolean>(false);
 
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     var loggedIn = props.AuthBaseModel?.username === undefined || props.AuthBaseModel?.username === null;
 
@@ -55,7 +55,7 @@ function NavBar(props: NavBarProps) {
             show={showModerationDropdown}
             onMouseEnter={() => setModerationDropdown(true)}
             onMouseLeave={() => setModerationDropdown(false)}
-            onClick={() => history.push("/moderation/search")}
+            onClick={() => navigate("/moderation/search")}
         >
             <NavDropdown.Item href="/moderation/search" className="navbar-header">
                 Search
@@ -107,7 +107,7 @@ function NavBar(props: NavBarProps) {
                                 show={showStreamDropdown}
                                 onMouseEnter={() => setStreamDropdown(true)}
                                 onMouseLeave={() => setStreamDropdown(false)}
-                                onClick={() => history.push("/stream/info")}
+                                onClick={() => navigate("/stream/info")}
                             >
                                 <NavDropdown.Item href="/stream/info" className="navbar-header">
                                     Info
@@ -126,7 +126,7 @@ function NavBar(props: NavBarProps) {
                                 show={showSoftwareDropdown}
                                 onMouseEnter={() => setSoftwareDropdown(true)}
                                 onMouseLeave={() => setSoftwareDropdown(false)}
-                                onClick={() => history.push("/software/development")}
+                                onClick={() => navigate("/software/development")}
                             >
                                 <NavDropdown.Item href="/software/development">Development</NavDropdown.Item>
                                 <NavDropdown.Item href="/software/current-month">Current Month</NavDropdown.Item>
