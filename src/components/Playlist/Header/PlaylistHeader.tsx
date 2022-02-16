@@ -5,7 +5,7 @@ import {
     SubmitAddRequest,
     SubmitChangePlaylistStateRequest,
     SubmitEmptyPlaylist
-} from "../../../services/UIApiService/UIApiService";
+} from "../../../services/PlaylistService/PlaylistService";
 import { useEffect, useState } from "react";
 
 import { RequestModal } from "../../Modals/RequestModal";

@@ -20,7 +20,7 @@ import {
     SubmitMarkInDriveRequest,
     SubmitRemoveRequest,
     SubmitPromoteRequest
-} from "../../../services/UIApiService/UIApiService";
+} from "../../../services/PlaylistService/PlaylistService";
 import { Equals } from "../../../services/StringComparisonService/StringComparisonService";
 
 function List(props: ListProps) {

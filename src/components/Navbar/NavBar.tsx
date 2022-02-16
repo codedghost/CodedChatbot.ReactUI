@@ -1,6 +1,8 @@
 import { Image, Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
 import Config from "../../services/Config/Config";
-import { CheckApiAvailability, GetAuthBaseModel } from "../../services/UIApiService/UIApiService";
+import { CheckApiAvailability } from "../../services/UIApiService/UIApiService";
+import { GetAuthBaseModel } from "../../services/ModerationService/ModerationService";
+
 import TwitchAuthBaseModel from "../../models/TwitchAuthBaseModel";
 
 import { useEffect, useState } from "react";

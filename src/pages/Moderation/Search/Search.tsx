@@ -2,9 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import debounce from "lodash.debounce";
 
-import { ModerationSongSearch } from "../../../services/UIApiService/UIApiService";
+import { ModerationSongSearch } from "../../../services/ModerationService/ModerationService";
+import { SongSearchProps, SongSearchResult } from "../../../services/ModerationService/ModerationServiceInterfaces";
 
-import { SearchProps, SongSearchProps, SongSearchResult, _defaultSongSearchProps } from "./SearchProps";
+import { SearchProps, _defaultSongSearchProps } from "./SearchProps";
 
 function Search(props: SearchProps) {
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -38,7 +39,7 @@ function Search(props: SearchProps) {
     };
 
     var debouncedSearch = useCallback(
-        debounce((props) => search(props), 500),
+        debounce((props: SongSearchProps) => search(props), 500),
         []
     );
 
