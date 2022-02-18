@@ -3,9 +3,13 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import debounce from "lodash.debounce";
 
 import { ModerationSongSearch } from "../../../services/ModerationService/ModerationService";
-import { SongSearchProps, SongSearchResult } from "../../../services/ModerationService/ModerationServiceInterfaces";
+import {
+    SongSearchProps,
+    SongSearchResult,
+    _defaultSongSearchProps
+} from "../../../services/ModerationService/ModerationServiceInterfaces";
 
-import { SearchProps, _defaultSongSearchProps } from "./SearchProps";
+import { SearchProps } from "./SearchProps";
 
 function Search(props: SearchProps) {
     const [errorMessage, setErrorMessage] = useState<string>("");
