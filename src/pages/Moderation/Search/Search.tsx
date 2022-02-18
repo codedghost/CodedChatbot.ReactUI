@@ -42,13 +42,29 @@ function Search(props: SearchProps) {
         []
     );
 
+    var handleDownloadSongEvent = function (songId: number) {};
+
+    var officialSongButton = <Button variant="danger">Official Song</Button>;
+    var deadLinkButton = <Button variant="secondary">Cannot Download</Button>;
+    var alreadyDownloadedButton = <Button variant="warning">Already downloaded</Button>;
+
     var searchResultContent = searchResults.map((s) => (
         <Row>
             <Col xs="6">
                 {s.songName} - {s.songArtist} - Charted by: {s.charterUsername}
             </Col>
             <Col xs="4">
-                <Button>Download To Drive</Button>
+                {s.isOfficial ? (
+                    officialSongButton
+                ) : s.isLinkDead ? (
+                    deadLinkButton
+                ) : s.isDownloaded ? (
+                    alreadyDownloadedButton
+                ) : (
+                    <Button variant="primary" onClick={() => handleDownloadSongEvent(s.songId)}>
+                        Download To Drive
+                    </Button>
+                )}
             </Col>
         </Row>
     ));
