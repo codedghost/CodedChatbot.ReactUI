@@ -10,6 +10,7 @@ import Home from "./pages/Home/Home";
 import Info from "./pages/Stream/Info/Info";
 import Playlist from "./pages/Stream/Playlist/Playlist";
 import ModerationSearch from "./pages/Moderation/Search/Search";
+import TransferUser from "./pages/Moderation/TransferUser/TransferUser";
 
 import GetUserPlaylistInfo from "./components/GetUserPlaylistInfo/GetUserPlaylistInfo";
 
@@ -45,6 +46,10 @@ function App() {
                     <Route
                         path="/moderation/search"
                         element={authBaseModel?.isModerator ? <ModerationSearch {...authBaseModel} /> : <></>}
+                    />
+                    <Route
+                        path="/moderation/transfer-user"
+                        element={authBaseModel?.isModerator ? <TransferUser /> : <></>}
                     />
                 </Routes>
             </BrowserRouter>
