@@ -21,3 +21,13 @@ export function GetUsername(): Promise<string> {
             return "";
         });
 }
+
+export function IsStreamerOnline(channelName: string) {
+    return AxiosGet<boolean>(`Status/Streamer?broadcaster=${channelName}`)
+        .then((response) => {
+            return response.data;
+        })
+        .catch(() => {
+            return false;
+        });
+}
