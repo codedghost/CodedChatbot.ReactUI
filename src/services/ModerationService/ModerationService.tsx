@@ -21,6 +21,13 @@ export function ModerationSongSearch(songSearchProps: SongSearchProps) {
     });
 }
 
+export function DownloadToDrive(songId: number) {
+    return AxiosPost<any, boolean>("Moderation/DownloadToOneDrive", { songId }).then((response) => {
+        console.log(response.data as boolean);
+        return response.data as boolean;
+    });
+}
+
 export function ModerationTransferUser(transferUserProps: TransferUserProps) {
     return AxiosPost<any, boolean>("Moderation/ModerationTransferUser", transferUserProps).then((response) => {
         console.log(response.data as boolean);
