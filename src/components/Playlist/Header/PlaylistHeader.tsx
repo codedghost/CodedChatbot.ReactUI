@@ -70,24 +70,8 @@ function PlaylistHeader(props: PlaylistHeaderProps) {
         </div>
     );
 
-    const loggedInContent = (
+    const moderatorButtons = props.isModerator ? (
         <>
-            <div className="d-flex justify-content-between align-items-center">
-                <div>
-                    Welcome {props.username}! {props.isModerator ? "You are a moderator, gg!" : ""} You have {totalVips}{" "}
-                    VIP tokens and {totalBytes} Bytes!
-                </div>
-                <div>
-                    <Button
-                        variant="success"
-                        onClick={() => {
-                            setShowAddRequestModal(true);
-                        }}
-                    >
-                        Request a song
-                    </Button>
-                </div>
-            </div>
             <div className="d-flex gap-1">
                 <div>
                     <Button
@@ -110,6 +94,30 @@ function PlaylistHeader(props: PlaylistHeaderProps) {
                     </Button>
                 </div>
             </div>
+        </>
+    ) : (
+        <></>
+    );
+
+    const loggedInContent = (
+        <>
+            <div className="d-flex justify-content-between align-items-center">
+                <div>
+                    Welcome {props.username}! {props.isModerator ? "You are a moderator, gg!" : ""} You have {totalVips}{" "}
+                    VIP tokens and {totalBytes} Bytes!
+                </div>
+                <div>
+                    <Button
+                        variant="success"
+                        onClick={() => {
+                            setShowAddRequestModal(true);
+                        }}
+                    >
+                        Request a song
+                    </Button>
+                </div>
+            </div>
+            {moderatorButtons}
         </>
     );
 
