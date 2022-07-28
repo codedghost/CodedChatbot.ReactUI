@@ -23,7 +23,7 @@ function Home() {
                             <Card.Text>
                                 {isStreamerOnline
                                     ? "Live Right Now!"
-                                    : "Live once a week, Wednesday, 18:30 UK Time (GMT)"}
+                                    : "Live once a week, Thursday, 19:00 UK Time (GMT)"}
                             </Card.Text>
                             <Card.Link href={`https://twitch.tv/${Config.ChannelName}`}>
                                 Check out {Config.ChannelName}'s channel on Twitch
