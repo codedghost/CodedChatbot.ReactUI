@@ -77,19 +77,19 @@ function NavBar(props: NavBarProps) {
                             <Nav.Link href={props.LoginUrl} className="login-link">
                                 {loggedIn ? "Login" : `Logout ${props.AuthBaseModel.username}`}
                             </Nav.Link>
-                            <Nav.Link href="/twitch">
+                            <Nav.Link href="https://www.twitch.tv/codedghost2">
                                 <Image src={TwitchLogo} width="25" height="25" alt="CodedGhost's Twitch" />
                             </Nav.Link>
-                            <Nav.Link href="/youtube">
+                            <Nav.Link href="https://www.youtube.com/c/codedghost">
                                 <Image src={YoutubeLogo} width="25" height="25" alt="CodedGhost's Youtube" />
                             </Nav.Link>
-                            <Nav.Link href="/twitter">
+                            <Nav.Link href="https://twitter.com/CodedGhost">
                                 <Image src={TwitterLogo} width="25" height="25" alt="CodedGhost's Twitter" />
                             </Nav.Link>
-                            <Nav.Link href="/insta">
+                            <Nav.Link href="https://instagram.com/CodedGhost">
                                 <Image src={InstagramLogo} width="25" height="25" alt="CodedGhost's Instagram" />
                             </Nav.Link>
-                            <Nav.Link href="/facebook">
+                            <Nav.Link href="https://www.facebook.com/CodedGhost">
                                 <Image src={FacebookLogo} width="25" height="25" alt="CodedGhost's Facebook" />
                             </Nav.Link>
                         </Nav>
