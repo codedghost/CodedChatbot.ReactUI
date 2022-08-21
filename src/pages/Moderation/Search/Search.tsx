@@ -57,13 +57,17 @@ function Search(props: SearchProps) {
     var deadLinkButton = <Button variant="secondary">Cannot Download</Button>;
     var alreadyDownloadedButton = <Button variant="warning">Already downloaded</Button>;
 
+    const openInNewTab = (url: string) => {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      };
+
     var actionButtonMap = function (s: SongSearchUIResult): JSX.Element {
         return (
             <Row key={s.songId}>
                 <Col xs="6">
                     {s.songName} - {s.songArtist} - Charted by: {s.charterUsername}
                 </Col>
-                <Col xs="4">
+                <Col xs="3">
                     {s.isOfficial ? (
                         officialSongButton
                     ) : s.isLinkDead ? (
@@ -79,6 +83,12 @@ function Search(props: SearchProps) {
                             {s.mainText}
                         </Button>
                     )}
+                </Col>
+                <Col xs="3">
+                    <Button 
+                        variant="primary"
+                        onClick={() => openInNewTab(s.downloadUrl)}
+                        >Open Download Link</Button>
                 </Col>
             </Row>
         );
@@ -161,4 +171,5 @@ interface SongSearchUIResult {
     isLinkDead: boolean;
     disableButton: boolean;
     mainText: string;
+    downloadUrl: string
 }
