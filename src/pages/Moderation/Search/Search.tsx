@@ -13,6 +13,7 @@ import { SearchProps } from "./SearchProps";
 
 function Search(props: SearchProps) {
     const [errorMessage, setErrorMessage] = useState<string>("");
+    const [defaultContent, setDefaultContent] = useState<string>("Enter search terms longer than three characters to initiate search.");
 
     const [searchProps, setSearchProps] = useState<SongSearchProps>(_defaultSongSearchProps);
 
@@ -32,7 +33,6 @@ function Search(props: SearchProps) {
     }, [searchProps]);
 
     var search = function (props: SongSearchProps) {
-        console.log(`${props.songName} - ${props.artistName}`);
         if (props.songName.length > 3 || props.artistName.length > 3) {
             ModerationSongSearch(props).then((result) => {
                 setSearchResults(
@@ -40,8 +40,11 @@ function Search(props: SearchProps) {
                         (s) => ({ ...s, disableButton: false, mainText: "Download to Drive" } as SongSearchUIResult)
                     )
                 );
+                setDefaultContent("");
             });
+            setDefaultContent("Searching...");
         } else {
+            setDefaultContent("Enter search terms longer than three characters to initiate search.");
             setSearchResults([]);
         }
     };
@@ -135,6 +138,7 @@ function Search(props: SearchProps) {
                 </Col>
             </Form.Group>
             <br />
+            <Row className="gap-3">{defaultContent}</Row>
             <Row className="gap-3">{searchResultsContent}</Row>
         </>
     );
