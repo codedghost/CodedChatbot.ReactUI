@@ -1,4 +1,4 @@
-import { Image, Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
+import { Image, Navbar, Nav, NavDropdown, Container, Spinner } from "react-bootstrap";
 import Config from "../../services/Config/Config";
 import { CheckApiAvailability } from "../../services/UIApiService/UIApiService";
 import { GetAuthBaseModel } from "../../services/ModerationService/ModerationService";
@@ -27,10 +27,12 @@ function NavBar(props: NavBarProps) {
     const navigate = useNavigate();
 
     var loggedIn = props.AuthBaseModel?.username === undefined || props.AuthBaseModel?.username === null;
+    var showSpinner = true;
 
     useEffect(() => {
         GetAuthBaseModel().then((authBaseModel) => {
             props.SetAuthModelCallback(authBaseModel);
+            showSpinner = false;
         });
     }, []);
 
@@ -47,8 +49,6 @@ function NavBar(props: NavBarProps) {
             else props.SetLoginUrlCallback("#");
         });
     }, [props, location.pathname]);
-
-    var test = "";
 
     var moderatorNavItem = props?.AuthBaseModel?.isModerator ? (
         <NavDropdown
@@ -68,15 +68,20 @@ function NavBar(props: NavBarProps) {
         <></>
     );
 
+    var spinnerContent = (<Spinner animation="border" />);
+    var loggedInContent = (
+        <Nav.Link href={props.LoginUrl} className="login-link">
+            {showSpinner ? spinnerContent : loggedIn ? "Login" : `Logout ${props.AuthBaseModel.username}`}
+        </Nav.Link>
+        );
+
     return (
         <div>
             <Navbar variant="dark" className="login-bar">
                 <Container fluid>
                     <Navbar.Collapse id="login-and-socials" className="justify-content-end">
                         <Nav>
-                            <Nav.Link href={props.LoginUrl} className="login-link">
-                                {loggedIn ? "Login" : `Logout ${props.AuthBaseModel.username}`}
-                            </Nav.Link>
+                            {loggedInContent}
                             <Nav.Link href="https://www.twitch.tv/codedghost2">
                                 <Image src={TwitchLogo} width="25" height="25" alt="CodedGhost's Twitch" />
                             </Nav.Link>
