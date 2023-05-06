@@ -27,12 +27,10 @@ function NavBar(props: NavBarProps) {
     const navigate = useNavigate();
 
     var loggedIn = props.AuthBaseModel?.username === undefined || props.AuthBaseModel?.username === null;
-    var showSpinner = true;
 
     useEffect(() => {
         GetAuthBaseModel().then((authBaseModel) => {
             props.SetAuthModelCallback(authBaseModel);
-            showSpinner = false;
         });
     }, []);
 
@@ -71,7 +69,7 @@ function NavBar(props: NavBarProps) {
     var spinnerContent = (<Spinner animation="border" />);
     var loggedInContent = (
         <Nav.Link href={props.LoginUrl} className="login-link">
-            {showSpinner ? spinnerContent : loggedIn ? "Login" : `Logout ${props.AuthBaseModel.username}`}
+            {props?.AuthBaseModel?.username ? loggedIn ? "Login" : `Logout ${props.AuthBaseModel.username}` : spinnerContent}
         </Nav.Link>
         );
 
