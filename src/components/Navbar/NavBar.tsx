@@ -34,7 +34,6 @@ function NavBar(props: NavBarProps) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  var showSpinner = true;
   var notLoggedIn =
     props.AuthBaseModel?.username === undefined ||
     props.AuthBaseModel?.username === null;
@@ -47,7 +46,6 @@ function NavBar(props: NavBarProps) {
 
   useEffect(() => {
     CheckApiAvailability().then((isAvailable) => {
-      showSpinner = !isAvailable;
       if (isAvailable)
         props.SetLoginUrlCallback(
           `${Config.Api.UI}${
@@ -80,15 +78,12 @@ function NavBar(props: NavBarProps) {
     <></>
   );
 
-  var spinnerContent = <Spinner animation="border" />;
   var loggedInContent = (
-    <Nav.Link href={props.LoginUrl} className="login-link">
-      {showSpinner
-        ? spinnerContent
-        : notLoggedIn
-        ? "Login"
-        : `Logout ${props.AuthBaseModel.username}`}
-    </Nav.Link>
+    <>
+      <Nav.Link href={props.LoginUrl} className="login-link">
+        {notLoggedIn ? "Login" : `Logout ${props.AuthBaseModel.username}`}
+      </Nav.Link>
+    </>
   );
 
   return (
