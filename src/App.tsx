@@ -9,6 +9,7 @@ import NavBar from "./components/Navbar/NavBar";
 import Home from "./pages/Home/Home";
 import Info from "./pages/Stream/Info/Info";
 import Playlist from "./pages/Stream/Playlist/Playlist";
+import Counter from "./pages/Stream/Counter/Counter";
 import ModerationSearch from "./pages/Moderation/Search/Search";
 import TransferUser from "./pages/Moderation/TransferUser/TransferUser";
 
@@ -20,10 +21,11 @@ import UserPlaylistInfo from "./models/UserPlaylistInfo";
 function App() {
     const [loginUrl, setLoginUrl] = useState<string>("#");
     const [authBaseModel, setAuthBaseModel] = useState<TwitchAuthBaseModel>();
-    const [userPlaylistInfo, setUserPlaylistInfo] = useState<UserPlaylistInfo>();
+    const [userPlaylistInfo, setUserPlaylistInfo] =
+        useState<UserPlaylistInfo>();
 
     return (
-        <div className="appContent">
+        <div className='appContent'>
             <BrowserRouter>
                 <NavBar
                     AuthBaseModel={authBaseModel}
@@ -32,24 +34,48 @@ function App() {
                     SetAuthModelCallback={setAuthBaseModel}
                 />
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/stream/info" element={<Info />} />
+                    <Route path='/' element={<Home />} />
+                    <Route path='/stream/info' element={<Info />} />
                     <Route
-                        path="/stream/playlist"
+                        path='/stream/playlist'
                         element={
                             <>
-                                <GetUserPlaylistInfo SetUserPlaylistInfoCallback={setUserPlaylistInfo} />
-                                <Playlist LoginUrl={loginUrl} UserPlaylistInfo={userPlaylistInfo} {...authBaseModel} />
+                                <GetUserPlaylistInfo
+                                    SetUserPlaylistInfoCallback={
+                                        setUserPlaylistInfo
+                                    }
+                                />
+                                <Playlist
+                                    LoginUrl={loginUrl}
+                                    UserPlaylistInfo={userPlaylistInfo}
+                                    {...authBaseModel}
+                                />
                             </>
                         }
                     />
                     <Route
-                        path="/moderation/search"
-                        element={authBaseModel?.isModerator ? <ModerationSearch {...authBaseModel} /> : <></>}
+                        path='/stream/counter/:counterName'
+                        element={<Counter />}
                     />
                     <Route
-                        path="/moderation/transfer-user"
-                        element={authBaseModel?.isModerator ? <TransferUser /> : <></>}
+                        path='/moderation/search'
+                        element={
+                            authBaseModel?.isModerator ? (
+                                <ModerationSearch {...authBaseModel} />
+                            ) : (
+                                <></>
+                            )
+                        }
+                    />
+                    <Route
+                        path='/moderation/transfer-user'
+                        element={
+                            authBaseModel?.isModerator ? (
+                                <TransferUser />
+                            ) : (
+                                <></>
+                            )
+                        }
                     />
                 </Routes>
             </BrowserRouter>
