@@ -1,0 +1,19 @@
+$odd-item-color: #404040;
+$even-item-color: #202020;
+
+.animated-card-item {
+    &:nth-child(even) {
+        .card {
+            background-color: $even-item-color !important;
+        }
+    }
+    &:nth-child(odd) {
+        .card {
+            background-color: $odd-item-color !important;
+        }
+    }
+}
+
+.container {
+    padding-bottom: 1rem;
+}
