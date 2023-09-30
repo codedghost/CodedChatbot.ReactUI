@@ -3,24 +3,26 @@ import { SongRequest } from "../../../../services/PlaylistService/PlaylistServic
 import { Equals } from "../../../../services/StringComparisonService/StringComparisonService";
 import { RequestOptions } from "../../../Modals/RequestOptions";
 
-import ActionIcon from "./ActionIcon";
+import ActionIcon from "../../../ActionIcon/ActionIcon";
 
 import { Card } from "react-bootstrap";
 import { motion } from "framer-motion";
 
-import * as IconEnums from "./IconEnums";
-
 const spring = {
     type: "spring",
     damping: 20,
-    stiffness: 300
+    stiffness: 300,
 };
 
 function SongItem(props: SongItemProps) {
     if (props.songRequest === undefined || props.songRequest === null) {
         return <></>;
     }
-    var isUsersRequest = Equals(props.songRequest?.requester, props.username) as boolean;
+
+    var isUsersRequest = Equals(
+        props.songRequest?.requester,
+        props.username
+    ) as boolean;
 
     var composeEditRequestOptions = function () {
         props.onEdit({
@@ -31,7 +33,7 @@ function SongItem(props: SongItemProps) {
             useVipToken: false,
             useSuperVipToken: false,
             isCurrent: props.isCurrent,
-            errorMessage: ""
+            errorMessage: "",
         } as RequestOptions);
     };
 
@@ -44,7 +46,7 @@ function SongItem(props: SongItemProps) {
             useVipToken: props.songRequest.isVip,
             useSuperVipToken: props.songRequest.isSuperVip,
             isCurrent: props.isCurrent,
-            errorMessage: ""
+            errorMessage: "",
         } as RequestOptions);
     };
 
@@ -57,7 +59,7 @@ function SongItem(props: SongItemProps) {
             useVipToken: props.songRequest.isVip,
             useSuperVipToken: props.songRequest.isSuperVip,
             isCurrent: props.isCurrent,
-            errorMessage: ""
+            errorMessage: "",
         } as RequestOptions);
     };
 
@@ -70,18 +72,22 @@ function SongItem(props: SongItemProps) {
             useVipToken: props.songRequest.isVip,
             useSuperVipToken: props.songRequest.isSuperVip,
             isCurrent: props.isCurrent,
-            errorMessage: ""
+            errorMessage: "",
         } as RequestOptions);
     };
 
     console.log(
         `isUsers: ${isUsersRequest}, songRequester: ${props.songRequest?.requester}, loggedInUser: ${props.username}`
     );
-    var editButton = (props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? (
+    var editButton = (
+        props.isCurrent
+            ? props.isModerator
+            : isUsersRequest || props.isModerator
+    ) ? (
         <ActionIcon
-            Icon={IconEnums.Types.Edit}
-            Colour={IconEnums.Colours.Yellow}
-            Size={IconEnums.Sizes.Medium}
+            Icon={"Edit"}
+            Colour={"Yellow"}
+            Size={"Medium"}
             AltText={`Edit ${props.songRequest.songTitle}`}
             onClick={composeEditRequestOptions}
         />
@@ -89,11 +95,15 @@ function SongItem(props: SongItemProps) {
         <></>
     );
 
-    var deleteButton = (props.isCurrent ? props.isModerator : isUsersRequest || props.isModerator) ? (
+    var deleteButton = (
+        props.isCurrent
+            ? props.isModerator
+            : isUsersRequest || props.isModerator
+    ) ? (
         <ActionIcon
-            Icon={IconEnums.Types.Remove}
-            Colour={IconEnums.Colours.Red}
-            Size={IconEnums.Sizes.Medium}
+            Icon={"Remove"}
+            Colour={"Red"}
+            Size={"Medium"}
             AltText={`Remove ${props.songRequest.songTitle}`}
             onClick={composeRemoveRequestOptions}
         />
@@ -104,16 +114,16 @@ function SongItem(props: SongItemProps) {
     var markInDriveButton = props.isModerator ? (
         props.songRequest.isInDrive ? (
             <ActionIcon
-                Icon={IconEnums.Types.InDrive}
-                Colour={IconEnums.Colours.Green}
-                Size={IconEnums.Sizes.Medium}
+                Icon={"InDrive"}
+                Colour={"Green"}
+                Size={"Medium"}
                 AltText={`${props.songRequest.songTitle} is already "in the drive"`}
             />
         ) : (
             <ActionIcon
-                Icon={IconEnums.Types.NotInDrive}
-                Colour={IconEnums.Colours.Red}
-                Size={IconEnums.Sizes.Medium}
+                Icon={"NotInDrive"}
+                Colour={"Red"}
+                Size={"Medium"}
                 AltText={`Mark ${props.songRequest.songTitle} as "in the drive"`}
                 onClick={composeMarkInDriveRequestOptions}
             />
@@ -129,9 +139,9 @@ function SongItem(props: SongItemProps) {
             (isUsersRequest && props.isRegular && props.vips > 0) ||
             (isUsersRequest && props.isVip && props.vips > 50)) ? (
             <ActionIcon
-                Icon={IconEnums.Types.Promote}
-                Colour={IconEnums.Colours.Yellow}
-                Size={IconEnums.Sizes.Medium}
+                Icon={"Promote"}
+                Colour={"Yellow"}
+                Size={"Medium"}
                 AltText={`Promote ${props.songRequest.songTitle} to VIP queue`}
                 onClick={composePromoteRequestOptions}
             />
@@ -143,9 +153,9 @@ function SongItem(props: SongItemProps) {
         <></>
     ) : (
         <ActionIcon
-            Icon={IconEnums.Types.LeftChat}
-            Colour={IconEnums.Colours.Red}
-            Size={IconEnums.Sizes.Medium}
+            Icon={"LeftChat"}
+            Colour={"Red"}
+            Size={"Medium"}
             AltText={`User ${props.songRequest.requester} has left chat`}
         />
     );
@@ -203,7 +213,7 @@ SongItem.defaultProps = {
         instrument: "",
         requester: "",
         isInDrive: false,
-        isInChat: false
+        isInChat: false,
     } as SongRequest,
     isModerator: false,
     username: "",
@@ -213,7 +223,7 @@ SongItem.defaultProps = {
     onEdit: (request) => {},
     onRemove: (request) => {},
     onMarkInDrive: (request) => {},
-    onPromote: (request) => {}
+    onPromote: (request) => {},
 } as SongItemProps;
 
 export interface SongItemProps {

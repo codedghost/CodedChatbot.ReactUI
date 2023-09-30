@@ -65,7 +65,7 @@ function Search(props: SearchProps) {
         return (
             <Row key={s.songId}>
                 <Col xs="6">
-                    {s.songName} - {s.songArtist} - Charted by: {s.charterUsername}
+                    {decodeURIComponent(s.songName)} - {s.songArtist} - Charted by: {s.charterUsername}
                 </Col>
                 <Col xs="3">
                     {s.isOfficial ? (
