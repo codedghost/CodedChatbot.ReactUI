@@ -11,20 +11,52 @@ import { Quote } from "../../../services/QuotesService/QuotesServiceInterfaces";
 import { ActionIconProps } from "../../../components/ActionIcon/ActionIcon";
 import { IsNullOrWhiteSpace } from "../../../services/StringHelperService";
 import "./Quotes.scss";
+import { Pagination } from "react-bootstrap";
 
 function Quotes(props: QuotesProps) {
     const [quotes, setQuotes] = useState<Quote[]>([]);
     const [totalQuotes, setTotalQuotes] = useState<number>(0);
-    const [selectedPage, setSelectedPage] = useState<number>(0);
+    const [selectedPage, setSelectedPage] = useState<number>(1);
+    const [pagination, setPagination] = useState<JSX.Element>(<></>);
+
+    const pageSize = 20;
 
     useEffect(() => {
         // Go retrieve paginated quotes
         // Get paging state from url
-        GetQuotes(selectedPage, props?.isModerator ?? false).then((data) => {
-            setQuotes(data.quotes);
-            setTotalQuotes(data.total);
-        });
-    }, [selectedPage, props]);
+        GetQuotes(selectedPage - 1, pageSize, props?.isModerator ?? false).then(
+            (data) => {
+                setQuotes(data.quotes);
+                setTotalQuotes(data.total);
+            }
+        );
+    }, [selectedPage]);
+
+    useEffect(() => {
+        if (totalQuotes === 0) {
+            setPagination(<></>);
+            return;
+        }
+
+        var items = [];
+        for (var page = 1; page <= totalQuotes / pageSize; page++) {
+            items.push(
+                <Pagination.Item
+                    key={page}
+                    active={page === selectedPage}
+                    onClick={(event) => {
+                        setSelectedPage(+event.currentTarget.innerText);
+                    }}
+                >
+                    {page}
+                </Pagination.Item>
+            );
+        }
+
+        var basicPagination = <Pagination>{items}</Pagination>;
+
+        setPagination(basicPagination);
+    }, [totalQuotes]);
 
     var actionIcons = (quote: Quote, props: QuotesProps): ActionIconProps[] => {
         var actionIcons = [] as ActionIconProps[];
@@ -78,7 +110,9 @@ function Quotes(props: QuotesProps) {
         return {
             key: quote.quoteId,
             headerContent: (
-                <h3 className="quote-header-content">@{quote.createdBy}</h3>
+                <h3 className="quote-header-content">
+                    Quote {quote.quoteId} - @{quote.createdBy}
+                </h3>
             ),
             mainContent: (
                 <>
@@ -95,7 +129,10 @@ function Quotes(props: QuotesProps) {
             <CardListHeader headerText="Quotes" />
             <CardList cards={cardListCards} />
 
-            <div>Total: {totalQuotes}</div>
+            <div className="d-flex justify-content-between">
+                <div>Total: {totalQuotes}</div>
+                {pagination}
+            </div>
         </>
     );
 }

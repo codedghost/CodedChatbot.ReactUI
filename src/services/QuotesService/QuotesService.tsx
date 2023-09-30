@@ -3,6 +3,7 @@ import { PagedQuoteResponse } from "./QuotesServiceInterfaces";
 
 export function GetQuotes(
     page: number,
+    pageSize: number,
     isModerator: boolean
 ): Promise<PagedQuoteResponse> {
     var url = "Quotes/GetQuotes";
@@ -17,6 +18,11 @@ export function GetQuotes(
     if (page) {
         url += `${setPrependCharacter(url)}page=${page}`;
     }
+
+    if (pageSize) {
+        url += `${setPrependCharacter(url)}pageSize=${pageSize}`;
+    }
+
     if (!isModerator) {
         url += `${setPrependCharacter(
             url
